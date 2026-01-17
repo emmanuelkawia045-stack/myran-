@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Mayran Online Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --danger: #e74c3c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-container {
+            width: 100%;
+            max-width: 450px;
+        }
+        
+        .login-card {
+            background: white;
+            border-radius: 25px;
+            padding: 50px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .logo h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            color: var(--primary);
+            font-size: 2.5rem;
+        }
+        
+        .logo span {
+            color: #e74c3c;
+        }
+        
+        .logo .admin-text {
+            font-size: 1rem;
+            color: #666;
+            margin-top: -10px;
+        }
+        
+        .form-control {
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 0.25rem rgba(231, 76, 60, 0.25);
+        }
+        
+        .btn-login {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(231, 76, 60, 0.3);
+        }
+        
+        .alert {
+            border-radius: 12px;
+            border: none;
+        }
+        
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            text-decoration: none;
+        }
+        
+        .back-link:hover {
+            color: var(--accent);
+        }
+        
+        .security-note {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .security-note i {
+            color: var(--success);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="logo">
+                <h1>May<span>ran</span> Shop</h1>
+                <p class="admin-text">Admin Dashboard Login</p>
+            </div>
+            
+            <div id="errorAlert" class="alert alert-danger d-none">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <span id="errorMessage"></span>
+            </div>
+            
+            <form id="adminLoginForm">
+                <div class="mb-4">
+                    <label for="adminUsername" class="form-label fw-bold">
+                        <i class="fas fa-user-shield me-2"></i> Admin Username
+                    </label>
+                    <input type="text" class="form-control" id="adminUsername" 
+                           placeholder="Enter admin username" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="adminPassword" class="form-label fw-bold">
+                        <i class="fas fa-lock me-2"></i> Password
+                    </label>
+                    <input type="password" class="form-control" id="adminPassword" 
+                           placeholder="Enter admin password" required>
+                </div>
+                
+                <div class="mb-4 form-check">
+                    <input type="checkbox" class="form-check-input" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">
+                        Remember me on this device
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-login">
+                    <i class="fas fa-sign-in-alt me-2"></i> Login to Admin Dashboard
+                </button>
+            </form>
+            
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left me-2"></i> Back to Main Website
+            </a>
+            
+            <div class="security-note">
+                <i class="fas fa-shield-alt me-2"></i>
+                Secure admin access only. All activities are logged.
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Default admin credentials (in production, use proper authentication)
+        const ADMIN_CREDENTIALS = {
+            username: "mayranadmin",
+            password: "Admin@2023#Mshop"
+        };
+        
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('adminUsername').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            
+            const errorAlert = document.getElementById('errorAlert');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Validate credentials
+            if (username === ADMIN_CREDENTIALS.username && password === ADMIN_CREDENTIALS.password) {
+                // Create admin session
+                const adminSession = {
+                    username: username,
+                    role: 'admin',
+                    loginTime: new Date().toISOString(),
+                    sessionId: 'ADMIN-' + Date.now(),
+                    rememberMe: rememberMe
+                };
+                
+                localStorage.setItem('adminSession', JSON.stringify(adminSession));
+                
+                // Log the login
+                let adminLogs = JSON.parse(localStorage.getItem('adminLogs')) || [];
+                adminLogs.push({
+                    action: 'LOGIN',
+                    username: username,
+                    timestamp: new Date().toISOString(),
+                    ip: 'local'
+                });
+                localStorage.setItem('adminLogs', JSON.stringify(adminLogs));
+                
+                // Redirect to admin dashboard
+                window.location.href = 'admin-dashboard.html';
+                
+            } else {
+                // Show error
+                errorMessage.textContent = 'Invalid admin username or password!';
+                errorAlert.classList.remove('d-none');
+                
+                // Log failed attempt
+                let failedAttempts = JSON.parse(localStorage.getItem('failedAdminAttempts')) || [];
+                failedAttempts.push({
+                    usernameAttempt: username,
+                    timestamp: new Date().toISOString()
+                });
+                localStorage.setItem('failedAdminAttempts', JSON.stringify(failedAttempts));
+                
+                // Clear password field
+                document.getElementById('adminPassword').value = '';
+            }
+        });
+        
+        // Check for existing session
+        document.addEventListener('DOMContentLoaded', function() {
+            const session = JSON.parse(localStorage.getItem('adminSession'));
+            if (session && session.rememberMe) {
+                window.location.href = 'admin-dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>

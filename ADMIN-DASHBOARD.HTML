@@ -1,0 +1,1944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Mayran Online Shop</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --info: #3498db;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+            color: white;
+            min-height: 100vh;
+            position: fixed;
+            width: 250px;
+            padding-top: 20px;
+            box-shadow: 3px 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 30px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-header h3 {
+            font-weight: 700;
+            color: white;
+            font-size: 1.4rem;
+        }
+        
+        .sidebar-header span {
+            color: #ffd700;
+        }
+        
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+        
+        .sidebar-menu a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            border-radius: 0 25px 25px 0;
+            margin-right: 15px;
+        }
+        
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active {
+            background: rgba(231, 76, 60, 0.2);
+            color: white;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .sidebar-menu i {
+            width: 25px;
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .admin-profile {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        
+        .admin-profile img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        
+        .top-bar {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .top-bar h2 {
+            margin: 0;
+            color: var(--primary);
+            font-weight: 700;
+        }
+        
+        .top-bar .badge {
+            background: var(--accent);
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+        
+        /* Stats Cards */
+        .stats-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+            border-top: 4px solid;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stats-card.total-orders { border-color: var(--accent); }
+        .stats-card.total-revenue { border-color: var(--success); }
+        .stats-card.total-users { border-color: var(--info); }
+        .stats-card.total-products { border-color: var(--warning); }
+        
+        .stats-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .stats-icon.orders { background: rgba(231, 76, 60, 0.15); color: var(--accent); }
+        .stats-icon.revenue { background: rgba(39, 174, 96, 0.15); color: var(--success); }
+        .stats-icon.users { background: rgba(52, 152, 219, 0.15); color: var(--info); }
+        .stats-icon.products { background: rgba(243, 156, 18, 0.15); color: var(--warning); }
+        
+        .stats-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin: 10px 0;
+        }
+        
+        .stats-label {
+            color: #666;
+            font-size: 0.95rem;
+        }
+        
+        /* Tables */
+        .table-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .table-card h5 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .table th {
+            background: var(--light);
+            border: none;
+            color: var(--primary);
+            font-weight: 600;
+            padding: 15px;
+        }
+        
+        .table td {
+            padding: 15px;
+            vertical-align: middle;
+        }
+        
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-processing { background: #fff3cd; color: #856404; }
+        .status-shipped { background: #cce5ff; color: #004085; }
+        .status-delivered { background: #d4edda; color: #155724; }
+        .status-cancelled { background: #f8d7da; color: #721c24; }
+        
+        /* Charts */
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            height: 100%;
+        }
+        
+        /* Modal */
+        .modal-content {
+            border-radius: 20px;
+            border: none;
+        }
+        
+        .btn-admin {
+            background: linear-gradient(to right, var(--accent), #c0392b);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-admin:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+            color: white;
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .action-btn {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .action-btn:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .action-btn i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+        
+        /* Logout Button */
+        .logout-btn {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            padding: 8px 20px;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            background: var(--accent);
+            color: white;
+        }
+        
+        /* Notification */
+        .notification-badge {
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3>May<span>ran</span> Admin</h3>
+            <p class="text-muted small">Dashboard v2.1</p>
+        </div>
+        
+        <ul class="sidebar-menu">
+            <li><a href="#" class="active" data-section="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="#" data-section="orders"><i class="fas fa-shopping-bag"></i> Orders <span class="notification-badge" id="pendingOrdersCount">0</span></a></li>
+            <li><a href="#" data-section="products"><i class="fas fa-box"></i> Products</a></li>
+            <li><a href="#" data-section="users"><i class="fas fa-users"></i> Users</a></li>
+            <li><a href="#" data-section="analytics"><i class="fas fa-chart-line"></i> Analytics</a></li>
+            <li><a href="#" data-section="settings"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="#" data-section="logs"><i class="fas fa-history"></i> Activity Logs</a></li>
+        </ul>
+        
+        <div class="admin-profile">
+            <img src="https://ui-avatars.com/api/?name=Mayran+Admin&background=e74c3c&color=fff&bold=true" 
+                 alt="Admin">
+            <h6 id="adminName">Mayran Admin</h6>
+            <p class="small text-muted mb-0">Super Administrator</p>
+            <button class="btn btn-sm logout-btn mt-3" id="logoutBtn">
+                <i class="fas fa-sign-out-alt me-1"></i> Logout
+            </button>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div>
+                <h2 id="sectionTitle">Dashboard Overview</h2>
+                <p class="text-muted mb-0 small">Last updated: <span id="lastUpdateTime">Just now</span></p>
+            </div>
+            <div class="d-flex align-items-center">
+                <span class="badge me-3">
+                    <i class="fas fa-clock me-1"></i> 
+                    <span id="currentTime">00:00</span>
+                </span>
+                <span class="badge bg-success">
+                    <i class="fas fa-circle me-1"></i> Online
+                </span>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <div class="action-btn" id="addProductBtn">
+                <i class="fas fa-plus-circle"></i>
+                <h6>Add Product</h6>
+                <p class="small text-muted">Add new item</p>
+            </div>
+            <div class="action-btn" id="processOrdersBtn">
+                <i class="fas fa-shipping-fast"></i>
+                <h6>Process Orders</h6>
+                <p class="small text-muted">Manage orders</p>
+            </div>
+            <div class="action-btn" id="viewReportsBtn">
+                <i class="fas fa-chart-bar"></i>
+                <h6>Reports</h6>
+                <p class="small text-muted">View reports</p>
+            </div>
+            <div class="action-btn" id="manageUsersBtn">
+                <i class="fas fa-user-cog"></i>
+                <h6>Manage Users</h6>
+                <p class="small text-muted">User management</p>
+            </div>
+        </div>
+        
+        <!-- Stats Cards -->
+        <div class="row" id="statsSection">
+            <div class="col-xl-3 col-md-6">
+                <div class="stats-card total-orders">
+                    <div class="stats-icon orders">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <div class="stats-number" id="totalOrders">0</div>
+                    <div class="stats-label">Total Orders</div>
+                    <div class="small text-muted mt-2"><span id="ordersToday">0</span> today</div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="stats-card total-revenue">
+                    <div class="stats-icon revenue">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="stats-number" id="totalRevenue">TZS 0</div>
+                    <div class="stats-label">Total Revenue</div>
+                    <div class="small text-muted mt-2"><span id="revenueToday">TZS 0</span> today</div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="stats-card total-users">
+                    <div class="stats-icon users">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stats-number" id="totalUsers">0</div>
+                    <div class="stats-label">Registered Users</div>
+                    <div class="small text-muted mt-2"><span id="usersToday">0</span> new today</div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="stats-card total-products">
+                    <div class="stats-icon products">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="stats-number" id="totalProducts">0</div>
+                    <div class="stats-label">Products</div>
+                    <div class="small text-muted mt-2"><span id="lowStock">0</span> low stock</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Orders Table -->
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="table-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="mb-0"><i class="fas fa-shopping-bag me-2"></i> Recent Orders</h5>
+                        <a href="#" class="text-decoration-none small" data-section="orders">View All <i class="fas fa-arrow-right ms-1"></i></a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="recentOrdersTable">
+                            <thead>
+                                <tr>
+                                    <th>Order ID</th>
+                                    <th>Customer</th>
+                                    <th>Date</th>
+                                    <th>Amount</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentOrdersBody">
+                                <!-- Orders will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="chart-container">
+                    <h5><i class="fas fa-chart-pie me-2"></i> Order Status</h5>
+                    <div id="orderChart" style="height: 250px;">
+                        <!-- Simple chart using CSS -->
+                        <div class="mt-4">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="status-badge status-processing me-3">Processing</div>
+                                <div class="flex-grow-1">
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar bg-warning" style="width: 30%" id="processingBar"></div>
+                                    </div>
+                                </div>
+                                <span class="ms-2" id="processingCount">0</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="status-badge status-shipped me-3">Shipped</div>
+                                <div class="flex-grow-1">
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar bg-info" style="width: 20%" id="shippedBar"></div>
+                                    </div>
+                                </div>
+                                <span class="ms-2" id="shippedCount">0</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="status-badge status-delivered me-3">Delivered</div>
+                                <div class="flex-grow-1">
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar bg-success" style="width: 40%" id="deliveredBar"></div>
+                                    </div>
+                                </div>
+                                <span class="ms-2" id="deliveredCount">0</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="status-badge status-cancelled me-3">Cancelled</div>
+                                <div class="flex-grow-1">
+                                    <div class="progress" style="height: 10px;">
+                                        <div class="progress-bar bg-danger" style="width: 10%" id="cancelledBar"></div>
+                                    </div>
+                                </div>
+                                <span class="ms-2" id="cancelledCount">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Users Table -->
+        <div class="row" id="usersSection" style="display: none;">
+            <div class="col-12">
+                <div class="table-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="mb-0"><i class="fas fa-users me-2"></i> Registered Users</h5>
+                        <button class="btn btn-admin btn-sm" id="exportUsersBtn">
+                            <i class="fas fa-download me-2"></i> Export CSV
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="usersTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Registered</th>
+                                    <th>Orders</th>
+                                    <th>Total Spent</th>
+                                    <th>Last Login</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <!-- Users will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Products Management -->
+        <div class="row" id="productsSection" style="display: none;">
+            <div class="col-12">
+                <div class="table-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="mb-0"><i class="fas fa-box me-2"></i> Products Management</h5>
+                        <div>
+                            <button class="btn btn-admin btn-sm me-2" id="addNewProductBtn">
+                                <i class="fas fa-plus me-2"></i> Add Product
+                            </button>
+                            <button class="btn btn-outline-secondary btn-sm" id="refreshProductsBtn">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="productsTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Image</th>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Discount</th>
+                                    <th>Rating</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsTableBody">
+                                <!-- Products will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Analytics Section -->
+        <div class="row" id="analyticsSection" style="display: none;">
+            <div class="col-lg-6">
+                <div class="chart-container">
+                    <h5><i class="fas fa-chart-line me-2"></i> Sales Overview (Last 7 Days)</h5>
+                    <div id="salesChart" style="height: 300px;">
+                        <canvas id="salesChartCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="chart-container">
+                    <h5><i class="fas fa-chart-bar me-2"></i> Top Products</h5>
+                    <div id="topProductsChart" style="height: 300px;">
+                        <canvas id="topProductsCanvas"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Activity Logs -->
+        <div class="row" id="logsSection" style="display: none;">
+            <div class="col-12">
+                <div class="table-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="mb-0"><i class="fas fa-history me-2"></i> Activity Logs</h5>
+                        <div class="btn-group">
+                            <button class="btn btn-outline-secondary btn-sm active" data-log-type="all">All</button>
+                            <button class="btn btn-outline-secondary btn-sm" data-log-type="login">Logins</button>
+                            <button class="btn btn-outline-secondary btn-sm" data-log-type="order">Orders</button>
+                            <button class="btn btn-outline-secondary btn-sm" data-log-type="product">Products</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="logsTable">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>User</th>
+                                    <th>Action</th>
+                                    <th>Details</th>
+                                    <th>IP Address</th>
+                                </tr>
+                            </thead>
+                            <tbody id="logsTableBody">
+                                <!-- Logs will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add Product Modal -->
+    <div class="modal fade" id="addProductModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-plus-circle me-2"></i> Add New Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addProductForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="productName" class="form-label">Product Name *</label>
+                                <input type="text" class="form-control" id="productName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="productCategory" class="form-label">Category *</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="">Select Category</option>
+                                    <option value="smartphones">Smartphones</option>
+                                    <option value="laptops">Laptops</option>
+                                    <option value="tvs">TVs</option>
+                                    <option value="headphones">Headphones</option>
+                                    <option value="smartwatches">Smartwatches</option>
+                                    <option value="gaming">Gaming</option>
+                                    <option value="drones">Drones</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="productPrice" class="form-label">Price (TZS) *</label>
+                                <input type="number" class="form-control" id="productPrice" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="productOldPrice" class="form-label">Old Price (TZS)</label>
+                                <input type="number" class="form-control" id="productOldPrice">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="productStock" class="form-label">Stock Quantity *</label>
+                                <input type="number" class="form-control" id="productStock" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="productDiscount" class="form-label">Discount (%)</label>
+                                <input type="number" class="form-control" id="productDiscount" min="0" max="100">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="productImage" class="form-label">Image URL *</label>
+                            <input type="url" class="form-control" id="productImage" required>
+                            <small class="text-muted">Enter Unsplash or direct image URL</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="productDescription" class="form-label">Description *</label>
+                            <textarea class="form-control" id="productDescription" rows="3" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="productRating" class="form-label">Initial Rating</label>
+                            <input type="number" class="form-control" id="productRating" min="0" max="5" step="0.1" value="4.5">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-admin" id="saveProductBtn">Save Product</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap & Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        // =====================
+        // ADMIN DASHBOARD SYSTEM
+        // =====================
+        let currentAdmin = JSON.parse(localStorage.getItem('adminSession'));
+        let products = JSON.parse(localStorage.getItem('products')) || [];
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        let activityLogs = JSON.parse(localStorage.getItem('activityLogs')) || [];
+        
+        // =====================
+        // INITIALIZATION
+        // =====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check admin authentication
+            if (!currentAdmin) {
+                window.location.href = 'admin-login.html';
+                return;
+            }
+            
+            // Update admin name
+            document.getElementById('adminName').textContent = currentAdmin.username || 'Mayran Admin';
+            
+            // Load all data
+            loadDashboardStats();
+            loadRecentOrders();
+            loadUsersTable();
+            loadProductsTable();
+            loadActivityLogs();
+            updateTime();
+            
+            // Initialize sidebar navigation
+            initSidebar();
+            
+            // Initialize quick actions
+            initQuickActions();
+            
+            // Auto refresh every 30 seconds
+            setInterval(loadDashboardStats, 30000);
+            setInterval(updateTime, 1000);
+        });
+        
+        // =====================
+        // TIME & UPDATE FUNCTIONS
+        // =====================
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            document.getElementById('currentTime').textContent = timeString;
+            
+            const lastUpdate = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
+            document.getElementById('lastUpdateTime').textContent = lastUpdate;
+        }
+        
+        // =====================
+        // SIDEBAR NAVIGATION
+        // =====================
+        function initSidebar() {
+            document.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links
+                    document.querySelectorAll('.sidebar-menu a').forEach(l => {
+                        l.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked link
+                    this.classList.add('active');
+                    
+                    // Get section to show
+                    const section = this.getAttribute('data-section');
+                    showSection(section);
+                });
+            });
+        }
+        
+        function showSection(section) {
+            // Hide all sections
+            document.getElementById('statsSection').style.display = 'none';
+            document.getElementById('usersSection').style.display = 'none';
+            document.getElementById('productsSection').style.display = 'none';
+            document.getElementById('analyticsSection').style.display = 'none';
+            document.getElementById('logsSection').style.display = 'none';
+            
+            // Update title
+            const titles = {
+                'dashboard': 'Dashboard Overview',
+                'orders': 'Order Management',
+                'products': 'Products Management',
+                'users': 'User Management',
+                'analytics': 'Analytics & Reports',
+                'logs': 'Activity Logs',
+                'settings': 'Settings'
+            };
+            
+            document.getElementById('sectionTitle').textContent = titles[section] || 'Dashboard';
+            
+            // Show selected section
+            if (section === 'dashboard') {
+                document.getElementById('statsSection').style.display = 'flex';
+                loadDashboardStats();
+            } else if (section === 'users') {
+                document.getElementById('usersSection').style.display = 'block';
+                loadUsersTable();
+            } else if (section === 'products') {
+                document.getElementById('productsSection').style.display = 'block';
+                loadProductsTable();
+            } else if (section === 'analytics') {
+                document.getElementById('analyticsSection').style.display = 'flex';
+                loadAnalyticsCharts();
+            } else if (section === 'logs') {
+                document.getElementById('logsSection').style.display = 'block';
+                loadActivityLogs();
+            }
+        }
+        
+        // =====================
+        // QUICK ACTIONS
+        // =====================
+        function initQuickActions() {
+            // Add Product
+            document.getElementById('addProductBtn').addEventListener('click', function() {
+                const modal = new bootstrap.Modal(document.getElementById('addProductModal'));
+                modal.show();
+            });
+            
+            // Process Orders
+            document.getElementById('processOrdersBtn').addEventListener('click', function() {
+                showSection('orders');
+            });
+            
+            // View Reports
+            document.getElementById('viewReportsBtn').addEventListener('click', function() {
+                showSection('analytics');
+            });
+            
+            // Manage Users
+            document.getElementById('manageUsersBtn').addEventListener('click', function() {
+                showSection('users');
+            });
+            
+            // Logout
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to logout?')) {
+                    // Log logout activity
+                    logActivity('LOGOUT', 'Admin logged out');
+                    
+                    // Clear session
+                    localStorage.removeItem('adminSession');
+                    window.location.href = 'admin-login.html';
+                }
+            });
+            
+            // Export Users CSV
+            document.getElementById('exportUsersBtn')?.addEventListener('click', exportUsersCSV);
+            
+            // Add New Product Button
+            document.getElementById('addNewProductBtn')?.addEventListener('click', function() {
+                const modal = new bootstrap.Modal(document.getElementById('addProductModal'));
+                modal.show();
+            });
+            
+            // Refresh Products
+            document.getElementById('refreshProductsBtn')?.addEventListener('click', loadProductsTable);
+            
+            // Save Product
+            document.getElementById('saveProductBtn').addEventListener('click', saveNewProduct);
+        }
+        
+        // =====================
+        // DASHBOARD STATS
+        // =====================
+        function loadDashboardStats() {
+            // Get all data
+            orders = JSON.parse(localStorage.getItem('orders')) || [];
+            users = JSON.parse(localStorage.getItem('users')) || [];
+            products = JSON.parse(localStorage.getItem('products')) || [];
+            
+            // Calculate today's date
+            const today = new Date().toISOString().split('T')[0];
+            
+            // Total Orders
+            const totalOrders = orders.length;
+            const ordersToday = orders.filter(order => 
+                order.date.startsWith(today)
+            ).length;
+            
+            // Total Revenue
+            const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
+            const revenueToday = orders
+                .filter(order => order.date.startsWith(today))
+                .reduce((sum, order) => sum + order.total, 0);
+            
+            // Total Users
+            const totalUsers = users.length;
+            const usersToday = users.filter(user => 
+                user.createdAt && user.createdAt.startsWith(today)
+            ).length;
+            
+            // Total Products
+            const totalProducts = products.length;
+            const lowStock = products.filter(product => product.stock < 10).length;
+            
+            // Update UI
+            document.getElementById('totalOrders').textContent = totalOrders;
+            document.getElementById('ordersToday').textContent = ordersToday;
+            document.getElementById('totalRevenue').textContent = `TZS ${totalRevenue.toLocaleString()}`;
+            document.getElementById('revenueToday').textContent = `TZS ${revenueToday.toLocaleString()}`;
+            document.getElementById('totalUsers').textContent = totalUsers;
+            document.getElementById('usersToday').textContent = usersToday;
+            document.getElementById('totalProducts').textContent = totalProducts;
+            document.getElementById('lowStock').textContent = lowStock;
+            
+            // Pending orders badge
+            const pendingOrders = orders.filter(order => order.status === 'processing').length;
+            document.getElementById('pendingOrdersCount').textContent = pendingOrders;
+            
+            // Update order status chart
+            updateOrderStatusChart();
+        }
+        
+        function updateOrderStatusChart() {
+            const processing = orders.filter(o => o.status === 'processing').length;
+            const shipped = orders.filter(o => o.status === 'shipped').length;
+            const delivered = orders.filter(o => o.status === 'delivered').length;
+            const cancelled = orders.filter(o => o.status === 'cancelled').length;
+            const total = orders.length;
+            
+            // Update counts
+            document.getElementById('processingCount').textContent = processing;
+            document.getElementById('shippedCount').textContent = shipped;
+            document.getElementById('deliveredCount').textContent = delivered;
+            document.getElementById('cancelledCount').textContent = cancelled;
+            
+            // Update progress bars
+            if (total > 0) {
+                document.getElementById('processingBar').style.width = `${(processing/total)*100}%`;
+                document.getElementById('shippedBar').style.width = `${(shipped/total)*100}%`;
+                document.getElementById('deliveredBar').style.width = `${(delivered/total)*100}%`;
+                document.getElementById('cancelledBar').style.width = `${(cancelled/total)*100}%`;
+            }
+        }
+        
+        // =====================
+        // RECENT ORDERS
+        // =====================
+        function loadRecentOrders() {
+            const recentOrders = orders.slice(0, 10); // Get last 10 orders
+            const tbody = document.getElementById('recentOrdersBody');
+            tbody.innerHTML = '';
+            
+            if (recentOrders.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-5">
+                            <i class="fas fa-shopping-bag fa-3x text-muted mb-3"></i>
+                            <p class="mb-0">No orders yet</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            recentOrders.forEach(order => {
+                const customer = users.find(u => u.id === order.userId) || {};
+                const customerName = customer.name || 'Guest';
+                const orderDate = new Date(order.date).toLocaleDateString();
+                const statusClass = `status-${order.status}`;
+                
+                const row = `
+                    <tr>
+                        <td><strong>${order.id}</strong></td>
+                        <td>${customerName}</td>
+                        <td>${orderDate}</td>
+                        <td><strong>TZS ${order.total.toLocaleString()}</strong></td>
+                        <td>
+                            <span class="status-badge ${statusClass}">
+                                ${order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary view-order" data-id="${order.id}">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-success ms-1 update-status" data-id="${order.id}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+            
+            // Add event listeners
+            document.querySelectorAll('.view-order').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const orderId = this.getAttribute('data-id');
+                    viewOrderDetails(orderId);
+                });
+            });
+            
+            document.querySelectorAll('.update-status').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const orderId = this.getAttribute('data-id');
+                    updateOrderStatus(orderId);
+                });
+            });
+        }
+        
+        function viewOrderDetails(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+            
+            const customer = users.find(u => u.id === order.userId) || {};
+            const items = order.items || [];
+            
+            let itemsHTML = '';
+            items.forEach(item => {
+                itemsHTML += `
+                    <div class="d-flex justify-content-between border-bottom pb-2 mb-2">
+                        <div>${item.name} x${item.quantity}</div>
+                        <div>TZS ${(item.price * item.quantity).toLocaleString()}</div>
+                    </div>
+                `;
+            });
+            
+            const modalHTML = `
+                <div class="modal fade" id="orderDetailsModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Order Details: ${orderId}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6>Customer Information</h6>
+                                        <p><strong>Name:</strong> ${customer.name || 'N/A'}</p>
+                                        <p><strong>Email:</strong> ${customer.email || 'N/A'}</p>
+                                        <p><strong>Phone:</strong> ${customer.phone || 'N/A'}</p>
+                                        <p><strong>Address:</strong> ${customer.address || 'N/A'}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6>Order Information</h6>
+                                        <p><strong>Date:</strong> ${new Date(order.date).toLocaleString()}</p>
+                                        <p><strong>Status:</strong> <span class="badge bg-primary">${order.status}</span></p>
+                                        <p><strong>Payment Method:</strong> ${order.paymentMethod}</p>
+                                        <p><strong>Delivery Area:</strong> ${order.deliveryArea}</p>
+                                    </div>
+                                </div>
+                                
+                                <hr>
+                                
+                                <h6>Order Items</h6>
+                                ${itemsHTML}
+                                
+                                <div class="mt-4">
+                                    <div class="d-flex justify-content-between">
+                                        <strong>Subtotal:</strong>
+                                        <strong>TZS ${order.subtotal.toLocaleString()}</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <strong>Delivery Fee:</strong>
+                                        <strong>TZS ${order.delivery.toLocaleString()}</strong>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-2 pt-2 border-top">
+                                        <strong>Total:</strong>
+                                        <strong class="text-accent">TZS ${order.total.toLocaleString()}</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" onclick="printOrder('${orderId}')">
+                                    <i class="fas fa-print me-2"></i> Print
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add modal to body and show it
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            const modal = new bootstrap.Modal(document.getElementById('orderDetailsModal'));
+            modal.show();
+            
+            // Remove modal after hiding
+            document.getElementById('orderDetailsModal').addEventListener('hidden.bs.modal', function() {
+                this.remove();
+            });
+        }
+        
+        function updateOrderStatus(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+            
+            const newStatus = prompt('Update order status:\n\nEnter: processing, shipped, delivered, or cancelled', order.status);
+            if (!newStatus || !['processing', 'shipped', 'delivered', 'cancelled'].includes(newStatus)) {
+                alert('Invalid status!');
+                return;
+            }
+            
+            order.status = newStatus;
+            localStorage.setItem('orders', JSON.stringify(orders));
+            
+            // Log activity
+            logActivity('ORDER_UPDATE', `Updated order ${orderId} status to ${newStatus}`);
+            
+            // Update display
+            loadDashboardStats();
+            loadRecentOrders();
+            alert('Order status updated successfully!');
+        }
+        
+        // =====================
+        // USERS MANAGEMENT
+        // =====================
+        function loadUsersTable() {
+            const tbody = document.getElementById('usersTableBody');
+            tbody.innerHTML = '';
+            
+            // Get user activity data
+            let userActivities = JSON.parse(localStorage.getItem('userActivities')) || {};
+            
+            if (users.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="10" class="text-center py-5">
+                            <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                            <p class="mb-0">No registered users yet</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            users.forEach(user => {
+                // Calculate user stats
+                const userOrders = orders.filter(o => o.userId === user.id);
+                const totalSpent = userOrders.reduce((sum, order) => sum + order.total, 0);
+                const totalOrders = userOrders.length;
+                
+                // Get user activity
+                const activity = userActivities[user.id] || {
+                    lastLogin: null,
+                    totalTimeSpent: 0,
+                    loginCount: 0
+                };
+                
+                const lastLogin = activity.lastLogin ? 
+                    new Date(activity.lastLogin).toLocaleString() : 'Never';
+                
+                const totalTime = formatTime(activity.totalTimeSpent);
+                const status = activity.lastLogin && 
+                    (Date.now() - new Date(activity.lastLogin).getTime() < 24*60*60*1000) ? 
+                    '<span class="badge bg-success">Active</span>' : 
+                    '<span class="badge bg-secondary">Inactive</span>';
+                
+                const row = `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=2c3e50&color=fff" 
+                                     class="rounded-circle me-2" width="30" height="30">
+                                ${user.name}
+                            </div>
+                        </td>
+                        <td>${user.email}</td>
+                        <td>${user.phone || 'N/A'}</td>
+                        <td>${user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}</td>
+                        <td><span class="badge bg-info">${totalOrders}</span></td>
+                        <td><strong>TZS ${totalSpent.toLocaleString()}</strong></td>
+                        <td>
+                            <div>${lastLogin}</div>
+                            <small class="text-muted">${totalTime} total</small>
+                        </td>
+                        <td>${status}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary view-user" data-id="${user.id}">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger ms-1 delete-user" data-id="${user.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+            
+            // Add event listeners
+            document.querySelectorAll('.view-user').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const userId = parseInt(this.getAttribute('data-id'));
+                    viewUserDetails(userId);
+                });
+            });
+            
+            document.querySelectorAll('.delete-user').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const userId = parseInt(this.getAttribute('data-id'));
+                    deleteUser(userId);
+                });
+            });
+        }
+        
+        function viewUserDetails(userId) {
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+            
+            // Get user activity data
+            let userActivities = JSON.parse(localStorage.getItem('userActivities')) || {};
+            const activity = userActivities[userId] || {
+                lastLogin: null,
+                totalTimeSpent: 0,
+                loginCount: 0,
+                sessions: []
+            };
+            
+            // Get user orders
+            const userOrders = orders.filter(o => o.userId === userId);
+            
+            let ordersHTML = '';
+            userOrders.forEach(order => {
+                ordersHTML += `
+                    <tr>
+                        <td>${order.id}</td>
+                        <td>${new Date(order.date).toLocaleDateString()}</td>
+                        <td>TZS ${order.total.toLocaleString()}</td>
+                        <td><span class="badge bg-primary">${order.status}</span></td>
+                    </tr>
+                `;
+            });
+            
+            const modalHTML = `
+                <div class="modal fade" id="userDetailsModal" tabindex="-1">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">User Details: ${user.name}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-4 text-center">
+                                        <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&background=e74c3c&color=fff&size=100" 
+                                             class="rounded-circle mb-3">
+                                        <h5>${user.name}</h5>
+                                        <p class="text-muted">Member since ${user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}</p>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h6>Account Information</h6>
+                                        <p><strong>Email:</strong> ${user.email}</p>
+                                        <p><strong>Phone:</strong> ${user.phone || 'N/A'}</p>
+                                        <p><strong>Address:</strong> ${user.address || 'N/A'}</p>
+                                        <p><strong>Area:</strong> ${user.area || 'N/A'}</p>
+                                        
+                                        <hr>
+                                        
+                                        <h6>Activity Statistics</h6>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <p><strong>Last Login:</strong><br>${activity.lastLogin ? new Date(activity.lastLogin).toLocaleString() : 'Never'}</p>
+                                                <p><strong>Total Time Online:</strong><br>${formatTime(activity.totalTimeSpent)}</p>
+                                            </div>
+                                            <div class="col-6">
+                                                <p><strong>Login Count:</strong><br>${activity.loginCount || 0}</p>
+                                                <p><strong>Average Session:</strong><br>${activity.loginCount > 0 ? formatTime(activity.totalTimeSpent / activity.loginCount) : '0 min'}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <hr>
+                                
+                                <h6>Order History (${userOrders.length} orders)</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Order ID</th>
+                                                <th>Date</th>
+                                                <th>Amount</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            ${ordersHTML || '<tr><td colspan="4" class="text-center">No orders yet</td></tr>'}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <div class="alert alert-info">
+                                            <h6>Total Spent</h6>
+                                            <h3 class="mb-0">TZS ${userOrders.reduce((sum, o) => sum + o.total, 0).toLocaleString()}</h3>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="alert alert-success">
+                                            <h6>Average Order Value</h6>
+                                            <h3 class="mb-0">TZS ${userOrders.length > 0 ? (userOrders.reduce((sum, o) => sum + o.total, 0) / userOrders.length).toLocaleString(undefined, {maximumFractionDigits: 0}) : '0'}</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" onclick="sendMessageToUser('${user.id}')">
+                                    <i class="fas fa-envelope me-2"></i> Send Message
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+            const modal = new bootstrap.Modal(document.getElementById('userDetailsModal'));
+            modal.show();
+            
+            document.getElementById('userDetailsModal').addEventListener('hidden.bs.modal', function() {
+                this.remove();
+            });
+        }
+        
+        function deleteUser(userId) {
+            if (!confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+                return;
+            }
+            
+            const userIndex = users.findIndex(u => u.id === userId);
+            if (userIndex === -1) return;
+            
+            const userName = users[userIndex].name;
+            users.splice(userIndex, 1);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Log activity
+            logActivity('USER_DELETE', `Deleted user: ${userName} (ID: ${userId})`);
+            
+            // Reload users table
+            loadUsersTable();
+            loadDashboardStats();
+            
+            alert(`User "${userName}" has been deleted.`);
+        }
+        
+        function exportUsersCSV() {
+            let csv = 'ID,Name,Email,Phone,Registered,Orders,Total Spent,Last Login,Status\n';
+            
+            let userActivities = JSON.parse(localStorage.getItem('userActivities')) || {};
+            
+            users.forEach(user => {
+                const userOrders = orders.filter(o => o.userId === user.id);
+                const totalSpent = userOrders.reduce((sum, order) => sum + order.total, 0);
+                const totalOrders = userOrders.length;
+                const activity = userActivities[user.id] || {};
+                const lastLogin = activity.lastLogin ? 
+                    new Date(activity.lastLogin).toLocaleString() : 'Never';
+                
+                csv += `"${user.id}","${user.name}","${user.email}","${user.phone || ''}","${user.createdAt || ''}",${totalOrders},${totalSpent},"${lastLogin}","${activity.lastLogin && (Date.now() - new Date(activity.lastLogin).getTime() < 24*60*60*1000) ? 'Active' : 'Inactive'}"\n`;
+            });
+            
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `mayran_users_${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            
+            // Log activity
+            logActivity('EXPORT', 'Exported users CSV');
+        }
+        
+        // =====================
+        // PRODUCTS MANAGEMENT
+        // =====================
+        function loadProductsTable() {
+            const tbody = document.getElementById('productsTableBody');
+            tbody.innerHTML = '';
+            
+            if (products.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="10" class="text-center py-5">
+                            <i class="fas fa-box fa-3x text-muted mb-3"></i>
+                            <p class="mb-0">No products added yet</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            products.forEach(product => {
+                const statusClass = product.stock > 10 ? 'bg-success' : product.stock > 0 ? 'bg-warning' : 'bg-danger';
+                const statusText = product.stock > 10 ? 'In Stock' : product.stock > 0 ? 'Low Stock' : 'Out of Stock';
+                
+                const row = `
+                    <tr>
+                        <td>${product.id}</td>
+                        <td>
+                            <img src="${product.image}" class="rounded" style="width: 50px; height: 50px; object-fit: cover;" alt="${product.name}">
+                        </td>
+                        <td>
+                            <div><strong>${product.name}</strong></div>
+                            <small class="text-muted">${product.description.substring(0, 50)}...</small>
+                        </td>
+                        <td><span class="badge bg-secondary">${product.category}</span></td>
+                        <td><strong>TZS ${product.price.toLocaleString()}</strong></td>
+                        <td>
+                            <span class="badge ${statusClass}">${product.stock} units</span>
+                        </td>
+                        <td>${product.discount ? `<span class="badge bg-danger">-${product.discount}%</span>` : '—'}</td>
+                        <td>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <span>${product.rating}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge ${statusClass}">${statusText}</span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary edit-product" data-id="${product.id}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger ms-1 delete-product" data-id="${product.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+            
+            // Add event listeners
+            document.querySelectorAll('.edit-product').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const productId = parseInt(this.getAttribute('data-id'));
+                    editProduct(productId);
+                });
+            });
+            
+            document.querySelectorAll('.delete-product').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const productId = parseInt(this.getAttribute('data-id'));
+                    deleteProduct(productId);
+                });
+            });
+        }
+        
+        function saveNewProduct() {
+            const name = document.getElementById('productName').value;
+            const category = document.getElementById('productCategory').value;
+            const price = parseInt(document.getElementById('productPrice').value);
+            const oldPrice = parseInt(document.getElementById('productOldPrice').value) || null;
+            const stock = parseInt(document.getElementById('productStock').value);
+            const discount = parseInt(document.getElementById('productDiscount').value) || 0;
+            const image = document.getElementById('productImage').value;
+            const description = document.getElementById('productDescription').value;
+            const rating = parseFloat(document.getElementById('productRating').value);
+            
+            if (!name || !category || !price || !stock || !image || !description) {
+                alert('Please fill in all required fields!');
+                return;
+            }
+            
+            const newProduct = {
+                id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
+                name: name,
+                category: category,
+                price: price,
+                oldPrice: oldPrice,
+                stock: stock,
+                discount: discount,
+                image: image,
+                description: description,
+                rating: rating,
+                createdAt: new Date().toISOString()
+            };
+            
+            products.push(newProduct);
+            localStorage.setItem('products', JSON.stringify(products));
+            
+            // Log activity
+            logActivity('PRODUCT_ADD', `Added product: ${name}`);
+            
+            // Hide modal and refresh
+            const modal = bootstrap.Modal.getInstance(document.getElementById('addProductModal'));
+            modal.hide();
+            
+            // Reset form
+            document.getElementById('addProductForm').reset();
+            
+            // Reload tables
+            loadProductsTable();
+            loadDashboardStats();
+            
+            alert('Product added successfully!');
+        }
+        
+        function editProduct(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            
+            // For simplicity, we'll just show a prompt
+            const newStock = prompt(`Edit stock for "${product.name}"\nCurrent stock: ${product.stock}`, product.stock);
+            if (newStock === null) return;
+            
+            const stockNum = parseInt(newStock);
+            if (isNaN(stockNum) || stockNum < 0) {
+                alert('Invalid stock quantity!');
+                return;
+            }
+            
+            product.stock = stockNum;
+            localStorage.setItem('products', JSON.stringify(products));
+            
+            // Log activity
+            logActivity('PRODUCT_EDIT', `Updated product stock: ${product.name} to ${stockNum}`);
+            
+            // Reload
+            loadProductsTable();
+            loadDashboardStats();
+            
+            alert('Product updated successfully!');
+        }
+        
+        function deleteProduct(productId) {
+            if (!confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
+                return;
+            }
+            
+            const productIndex = products.findIndex(p => p.id === productId);
+            if (productIndex === -1) return;
+            
+            const productName = products[productIndex].name;
+            products.splice(productIndex, 1);
+            localStorage.setItem('products', JSON.stringify(products));
+            
+            // Log activity
+            logActivity('PRODUCT_DELETE', `Deleted product: ${productName}`);
+            
+            // Reload
+            loadProductsTable();
+            loadDashboardStats();
+            
+            alert(`Product "${productName}" has been deleted.`);
+        }
+        
+        // =====================
+        // ANALYTICS & CHARTS
+        // =====================
+        function loadAnalyticsCharts() {
+            // Sales chart for last 7 days
+            const salesData = getLast7DaysSales();
+            renderSalesChart(salesData);
+            
+            // Top products chart
+            const topProducts = getTopProducts();
+            renderTopProductsChart(topProducts);
+        }
+        
+        function getLast7DaysSales() {
+            const result = [];
+            const today = new Date();
+            
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date(today);
+                date.setDate(today.getDate() - i);
+                const dateString = date.toISOString().split('T')[0];
+                
+                const daySales = orders
+                    .filter(order => order.date.startsWith(dateString))
+                    .reduce((sum, order) => sum + order.total, 0);
+                
+                result.push({
+                    date: dateString,
+                    sales: daySales,
+                    label: date.toLocaleDateString('en-US', { weekday: 'short' })
+                });
+            }
+            
+            return result;
+        }
+        
+        function getTopProducts() {
+            // Count product sales from orders
+            const productSales = {};
+            
+            orders.forEach(order => {
+                order.items.forEach(item => {
+                    if (!productSales[item.name]) {
+                        productSales[item.name] = {
+                            name: item.name,
+                            quantity: 0,
+                            revenue: 0
+                        };
+                    }
+                    productSales[item.name].quantity += item.quantity;
+                    productSales[item.name].revenue += item.price * item.quantity;
+                });
+            });
+            
+            // Convert to array and sort by revenue
+            return Object.values(productSales)
+                .sort((a, b) => b.revenue - a.revenue)
+                .slice(0, 5);
+        }
+        
+        function renderSalesChart(salesData) {
+            const ctx = document.getElementById('salesChartCanvas').getContext('2d');
+            
+            // Destroy existing chart if it exists
+            if (window.salesChart) {
+                window.salesChart.destroy();
+            }
+            
+            window.salesChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: salesData.map(d => d.label),
+                    datasets: [{
+                        label: 'Sales (TZS)',
+                        data: salesData.map(d => d.sales),
+                        borderColor: '#e74c3c',
+                        backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'TZS ' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function renderTopProductsChart(topProducts) {
+            const ctx = document.getElementById('topProductsCanvas').getContext('2d');
+            
+            // Destroy existing chart if it exists
+            if (window.topProductsChart) {
+                window.topProductsChart.destroy();
+            }
+            
+            window.topProductsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: topProducts.map(p => p.name.substring(0, 20) + (p.name.length > 20 ? '...' : '')),
+                    datasets: [{
+                        label: 'Revenue (TZS)',
+                        data: topProducts.map(p => p.revenue),
+                        backgroundColor: [
+                            '#e74c3c',
+                            '#3498db',
+                            '#2ecc71',
+                            '#f39c12',
+                            '#9b59b6'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'TZS ' + value.toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // =====================
+        // ACTIVITY LOGS
+        // =====================
+        function loadActivityLogs(filter = 'all') {
+            const tbody = document.getElementById('logsTableBody');
+            tbody.innerHTML = '';
+            
+            // Get logs from multiple sources
+            let allLogs = [];
+            
+            // Admin logs
+            const adminLogs = JSON.parse(localStorage.getItem('adminLogs')) || [];
+            adminLogs.forEach(log => {
+                allLogs.push({
+                    timestamp: log.timestamp,
+                    user: log.username,
+                    action: log.action,
+                    details: 'Admin action',
+                    ip: log.ip,
+                    type: 'admin'
+                });
+            });
+            
+            // Activity logs
+            const activityLogs = JSON.parse(localStorage.getItem('activityLogs')) || [];
+            activityLogs.forEach(log => {
+                allLogs.push({
+                    timestamp: log.timestamp,
+                    user: log.user || 'System',
+                    action: log.action,
+                    details: log.details,
+                    ip: log.ip || 'local',
+                    type: getLogType(log.action)
+                });
+            });
+            
+            // User login logs (from userActivities)
+            const userActivities = JSON.parse(localStorage.getItem('userActivities')) || {};
+            Object.entries(userActivities).forEach(([userId, activity]) => {
+                if (activity.sessions) {
+                    activity.sessions.forEach(session => {
+                        if (session.loginTime) {
+                            const user = users.find(u => u.id == userId);
+                            allLogs.push({
+                                timestamp: session.loginTime,
+                                user: user ? user.name : `User ${userId}`,
+                                action: 'USER_LOGIN',
+                                details: `User logged in for ${session.duration ? formatTime(session.duration) : 'unknown time'}`,
+                                ip: 'local',
+                                type: 'login'
+                            });
+                        }
+                    });
+                }
+            });
+            
+            // Sort by timestamp (newest first)
+            allLogs.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            // Apply filter
+            if (filter !== 'all') {
+                allLogs = allLogs.filter(log => log.type === filter);
+            }
+            
+            // Display logs
+            if (allLogs.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="text-center py-5">
+                            <i class="fas fa-history fa-3x text-muted mb-3"></i>
+                            <p class="mb-0">No activity logs found</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            // Show only 50 most recent logs
+            allLogs.slice(0, 50).forEach(log => {
+                const row = `
+                    <tr>
+                        <td>${new Date(log.timestamp).toLocaleString()}</td>
+                        <td><strong>${log.user}</strong></td>
+                        <td>
+                            <span class="badge ${getActionBadgeClass(log.action)}">
+                                ${log.action}
+                            </span>
+                        </td>
+                        <td>${log.details}</td>
+                        <td><code>${log.ip}</code></td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+        
+        function getLogType(action) {
+            if (action.includes('LOGIN') || action.includes('LOGOUT')) return 'login';
+            if (action.includes('ORDER')) return 'order';
+            if (action.includes('PRODUCT')) return 'product';
+            return 'admin';
+        }
+        
+        function getActionBadgeClass(action) {
+            if (action.includes('ADD') || action.includes('CREATE')) return 'bg-success';
+            if (action.includes('DELETE') || action.includes('REMOVE')) return 'bg-danger';
+            if (action.includes('UPDATE') || action.includes('EDIT')) return 'bg-warning';
+            if (action.includes('LOGIN') || action.includes('LOGOUT')) return 'bg-info';
+            return 'bg-secondary';
+        }
+        
+        // =====================
+        // HELPER FUNCTIONS
+        // =====================
+        function logActivity(action, details) {
+            const logs = JSON.parse(localStorage.getItem('activityLogs')) || [];
+            logs.push({
+                timestamp: new Date().toISOString(),
+                user: currentAdmin.username,
+                action: action,
+                details: details,
+                ip: 'admin-dashboard'
+            });
+            localStorage.setItem('activityLogs', JSON.stringify(logs));
+        }
+        
+        function formatTime(milliseconds) {
+            if (!milliseconds) return '0 min';
+            
+            const seconds = Math.floor(milliseconds / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            
+            if (hours > 0) {
+                return `${hours} h ${minutes % 60} min`;
+            } else if (minutes > 0) {
+                return `${minutes} min`;
+            } else {
+                return `${seconds} sec`;
+            }
+        }
+        
+        function printOrder(orderId) {
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <title>Order Invoice - ${orderId}</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 20px; }
+                        .header { text-align: center; margin-bottom: 30px; }
+                        .header h1 { color: #e74c3c; }
+                        .section { margin-bottom: 20px; }
+                        .section h3 { border-bottom: 2px solid #333; padding-bottom: 5px; }
+                        table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+                        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+                        th { background-color: #f2f2f2; }
+                        .total { font-size: 1.2em; font-weight: bold; text-align: right; }
+                        .footer { margin-top: 50px; text-align: center; color: #666; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <h1>Mayran Online Shop</h1>
+                        <p>Order Invoice: ${orderId}</p>
+                        <p>Printed: ${new Date().toLocaleString()}</p>
+                    </div>
+                    
+                    <div class="section">
+                        <h3>Order Summary</h3>
+                        <p><strong>Status:</strong> ${orders.find(o => o.id === orderId)?.status || 'Unknown'}</p>
+                        <p><strong>Date:</strong> ${orders.find(o => o.id === orderId)?.date ? new Date(orders.find(o => o.id === orderId).date).toLocaleString() : 'N/A'}</p>
+                    </div>
+                    
+                    <div class="footer">
+                        <p>Thank you for shopping with Mayran Online Shop!</p>
+                        <p>WhatsApp: +255 767 479 501 | Email: support@mayranshop.co.tz</p>
+                    </div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+        
+        function sendMessageToUser(userId) {
+            const user = users.find(u => u.id == userId);
+            if (!user) return;
+            
+            const message = prompt(`Send WhatsApp message to ${user.name} (${user.phone}):`, 
+                `Hello ${user.name.split(' ')[0]}, this is Mayran Shop. How can we assist you today?`);
+            
+            if (message) {
+                const encodedMessage = encodeURIComponent(message);
+                window.open(`https://wa.me/${user.phone}?text=${encodedMessage}`, '_blank');
+            }
+        }
+        
+        // Initialize log filter buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('[data-log-type]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    document.querySelectorAll('[data-log-type]').forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Load logs with filter
+                    const filter = this.getAttribute('data-log-type');
+                    loadActivityLogs(filter);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

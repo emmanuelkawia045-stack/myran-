@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | System Yetu</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #e74c3c;
+            --accent-color: #3498db;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --light-color: #f8f9fa;
+            --dark-color: #2c3e50;
+            --gray-color: #7f8c8d;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ed 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark-color);
+        }
+        
+        .navbar-custom {
+            background: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border-radius: 0 0 20px 20px;
+            padding: 15px 0;
+        }
+        
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .welcome-card {
+            background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+        
+        .welcome-card::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -30%;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 50%;
+        }
+        
+        .dashboard-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            transition: transform 0.3s;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+        }
+        
+        .section-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--secondary-color);
+            position: relative;
+        }
+        
+        .section-title i {
+            color: var(--secondary-color);
+        }
+        
+        .stat-box {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s;
+            border: 1px solid #e9ecef;
+            height: 100%;
+        }
+        
+        .stat-box:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            border-color: var(--secondary-color);
+        }
+        
+        .stat-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-right: 20px;
+            flex-shrink: 0;
+            color: white;
+        }
+        
+        .stat-content h5 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0;
+            color: var(--dark-color);
+            line-height: 1.2;
+        }
+        
+        .stat-content p {
+            margin: 8px 0 0;
+            color: var(--gray-color);
+            font-size: 0.95rem;
+        }
+        
+        .session-item {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--success-color);
+            transition: all 0.3s;
+            border: 1px solid #e9ecef;
+        }
+        
+        .session-item:hover {
+            background: white;
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-left-color: var(--secondary-color);
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #c0392b 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.2);
+        }
+        
+        .btn-primary-custom:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(231, 76, 60, 0.3);
+            color: white;
+        }
+        
+        .btn-secondary-custom {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            padding: 10px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-secondary-custom:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.1);
+        }
+        
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .order-card {
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s;
+        }
+        
+        .order-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .order-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-processing {
+            background: #cce5ff;
+            color: #004085;
+        }
+        
+        .order-id {
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        /* Modal Styling */
+        .modal-custom .modal-content {
+            border-radius: 20px;
+            border: none;
+        }
+        
+        .modal-header-custom {
+            background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+            color: white;
+            border-radius: 20px 20px 0 0;
+            padding: 20px 30px;
+        }
+        
+        .modal-body-custom {
+            padding: 30px;
+        }
+        
+        /* Order Details */
+        .order-detail-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .order-detail-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* Profile Form */
+        .form-group-custom {
+            margin-bottom: 20px;
+        }
+        
+        .form-group-custom label {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+        
+        .form-control-custom {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px 15px;
+            transition: all 0.3s;
+        }
+        
+        .form-control-custom:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.25);
+        }
+        
+        /* Table Styling */
+        .table-custom {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .table-custom thead th {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 15px;
+        }
+        
+        .table-custom tbody td {
+            padding: 12px 15px;
+            vertical-align: middle;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .stat-box {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+            
+            .stat-icon {
+                margin-right: 0;
+                margin-bottom: 15px;
+                width: 60px;
+                height: 60px;
+                font-size: 1.7rem;
+            }
+            
+            .stat-content h5 {
+                font-size: 1.7rem;
+            }
+            
+            .session-item .d-flex {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .session-item div:last-child {
+                margin-top: 8px;
+                font-size: 0.85rem;
+            }
+            
+            .dashboard-card {
+                padding: 20px;
+            }
+            
+            .welcome-card {
+                padding: 25px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .dashboard-card {
+                padding: 20px;
+            }
+            
+            .section-title {
+                font-size: 1.4rem;
+            }
+            
+            .stat-box {
+                padding: 15px;
+            }
+            
+            .stat-icon {
+                width: 55px;
+                height: 55px;
+                font-size: 1.5rem;
+            }
+            
+            .stat-content h5 {
+                font-size: 1.5rem;
+            }
+            
+            .welcome-card h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3" href="#" style="color: var(--secondary-color);">
+                <i class="fas fa-store me-2"></i>MAYRAN<span style="color: var(--primary-color);">SHOP</span>
+            </a>
+            
+            <div class="d-flex align-items-center">
+                <div class="me-3 d-none d-md-block">
+                    <span id="currentDateTime" class="text-muted"></span>
+                </div>
+                <button class="btn btn-primary-custom" onclick="logout()">
+                    <i class="fas fa-sign-out-alt me-2"></i>Toka
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Dashboard Container -->
+    <div class="dashboard-container">
+        <!-- Welcome Section with Back Button -->
+        <div class="welcome-card">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <div>
+                    <button class="btn btn-secondary-custom mb-3 mb-md-0" onclick="goBack()">
+                        <i class="fas fa-arrow-left me-2"></i>Rudi Nyuma
+                    </button>
+                    <h1 class="mb-2">Karibu <span id="userName"></span>!</h1>
+                    <p class="mb-0 opacity-75">Hapa ndipo unaweza kudhibiti akaunti yako na kufuatilia shughuli zako</p>
+                </div>
+                <div class="text-center mt-3 mt-md-0">
+                    <img id="userAvatar" src="https://ui-avatars.com/api/?name=User&background=e74c3c&color=fff&size=80" 
+                         alt="User Avatar" class="user-avatar">
+                    <p class="mt-2 mb-0 fw-bold" id="userEmail"></p>
+                    <p class="mb-0 small" id="userPhone"></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- User Account Summary -->
+        <div class="dashboard-card">
+            <h4 class="section-title">
+                <i class="fas fa-user-circle me-2"></i>Taarifa za Akaunti Yako
+            </h4>
+            
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="stat-box">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);">
+                            <i class="fas fa-hashtag"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h5 id="userOrderCount">0</h5>
+                            <p class="text-muted">Jumla ya Oda</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <div class="stat-box">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%);">
+                            <i class="fas fa-shipping-fast"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h5 id="activeOrders">0</h5>
+                            <p class="text-muted">Oda Zinazoendelea</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <div class="stat-box">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h5 id="memberSince">-</h5>
+                            <p class="text-muted">Mwanachama Tangu</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Orders Section -->
+        <div class="dashboard-card">
+            <h4 class="section-title">
+                <i class="fas fa-shopping-bag me-2"></i>Oda Zako za Hivi Karibuni
+            </h4>
+            
+            <div id="recentOrders">
+                <!-- Orders will be dynamically loaded here -->
+                <div class="text-center py-5">
+                    <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+                    <h5 class="text-muted">Huna oda bado</h5>
+                    <p class="text-muted">Oda yako ya kwanza itaonekana hapa</p>
+                    <button class="btn btn-primary-custom mt-2" onclick="window.location.href='index.html'">
+                        <i class="fas fa-shopping-cart me-2"></i>Nunua Sasa
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- User Activity Tracking Section -->
+        <div class="dashboard-card">
+            <h4 class="section-title">
+                <i class="fas fa-chart-line me-2"></i>Takwimu za Shughuli Zako
+            </h4>
+            
+            <div class="row mt-4">
+                <div class="col-md-4 mb-3">
+                    <div class="stat-box">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h5 id="totalTimeSpent">0 min</h5>
+                            <p class="text-muted">Muda Wote Naktandiko</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <div class="stat-box">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h5 id="loginCount">0</h5>
+                            <p class="text-muted">Jumla ya Kuingia</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-3">
+                    <div class="stat-box">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h5 id="lastLoginTime">Kamwe</h5>
+                            <p class="text-muted">Kuingia Mwisho</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4">
+                <h6 class="section-title" style="font-size: 1.2rem; border-bottom: 2px solid #e74c3c;">
+                    <i class="fas fa-list me-2"></i>Vikundi Vya Hivi Karibuni
+                </h6>
+                <div id="sessionHistory" class="mt-3">
+                    <!-- Sessions will be listed here -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="dashboard-card">
+            <h4 class="section-title">
+                <i class="fas fa-bolt me-2"></i>Vitendo Vya Haraka
+            </h4>
+            
+            <div class="row mt-3">
+                <div class="col-md-3 col-6 mb-3">
+                    <button class="btn btn-secondary-custom w-100 py-3" onclick="window.location.href='index.html'">
+                        <i class="fas fa-home fa-2x mb-2"></i><br>
+                        Nyumbani
+                    </button>
+                </div>
+                <div class="col-md-3 col-6 mb-3">
+                    <button class="btn btn-secondary-custom w-100 py-3" onclick="window.location.href='products.html'">
+                        <i class="fas fa-shopping-cart fa-2x mb-2"></i><br>
+                        Nunua
+                    </button>
+                </div>
+                <div class="col-md-3 col-6 mb-3">
+                    <button class="btn btn-secondary-custom w-100 py-3" onclick="showOrderHistory()">
+                        <i class="fas fa-history fa-2x mb-2"></i><br>
+                        Historia Oda
+                    </button>
+                </div>
+                <div class="col-md-3 col-6 mb-3">
+                    <button class="btn btn-secondary-custom w-100 py-3" onclick="showProfileEditor()">
+                        <i class="fas fa-user-cog fa-2x mb-2"></i><br>
+                        Badilisha Profaili
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div class="modal fade" id="orderDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content modal-custom">
+                <div class="modal-header modal-header-custom">
+                    <h5 class="modal-title">Maelezo ya Oda</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body modal-body-custom" id="orderDetailsContent">
+                    <!-- Order details will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order History Modal -->
+    <div class="modal fade" id="orderHistoryModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content modal-custom">
+                <div class="modal-header modal-header-custom">
+                    <h5 class="modal-title">Historia Yote ya Oda</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body modal-body-custom">
+                    <div class="table-responsive">
+                        <table class="table table-custom" id="orderHistoryTable">
+                            <thead>
+                                <tr>
+                                    <th>Nambari ya Oda</th>
+                                    <th>Tarehe</th>
+                                    <th>Bidhaa</th>
+                                    <th>Jumla</th>
+                                    <th>Hali</th>
+                                    <th>Vitendo</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orderHistoryBody">
+                                <!-- Order history will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Editor Modal -->
+    <div class="modal fade" id="profileEditorModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content modal-custom">
+                <div class="modal-header modal-header-custom">
+                    <h5 class="modal-title">Badilisha Maelezo ya Profaili</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body modal-body-custom">
+                    <form id="profileForm" onsubmit="updateProfile(event)">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group-custom">
+                                    <label for="editFirstName">Jina la Kwanza</label>
+                                    <input type="text" class="form-control form-control-custom" id="editFirstName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group-custom">
+                                    <label for="editLastName">Jina la Mwisho</label>
+                                    <input type="text" class="form-control form-control-custom" id="editLastName" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group-custom">
+                            <label for="editEmail">Barua Pepe</label>
+                            <input type="email" class="form-control form-control-custom" id="editEmail" required>
+                        </div>
+                        
+                        <div class="form-group-custom">
+                            <label for="editPhone">Nambari ya Simu</label>
+                            <input type="tel" class="form-control form-control-custom" id="editPhone" required>
+                        </div>
+                        
+                        <div class="form-group-custom">
+                            <label for="editAddress">Anwani ya Mtaa</label>
+                            <textarea class="form-control form-control-custom" id="editAddress" rows="3" required></textarea>
+                        </div>
+                        
+                        <div class="form-group-custom">
+                            <label for="editArea">Eneo la Ukaaji</label>
+                            <select class="form-control form-control-custom" id="editArea" required>
+                                <option value="">Chagua eneo lako</option>
+                                <option value="city_center">Kituo cha Mji</option>
+                                <option value="kinondoni">Kinondoni</option>
+                                <option value="ilala">Ilala</option>
+                                <option value="temeke">Temeke</option>
+                                <option value="ubungo">Ubungo</option>
+                                <option value="kigamboni">Kigamboni</option>
+                            </select>
+                        </div>
+                        
+                        <div class="alert alert-info mt-4">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Kwa kubadilisha nenosiri, tumia fomu hapa chini
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group-custom">
+                                    <label for="newPassword">Nenosiri Jipya (Achana ikiwa hutaki kubadili)</label>
+                                    <input type="password" class="form-control form-control-custom" id="newPassword">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group-custom">
+                                    <label for="confirmNewPassword">Thibitisha Nenosiri Jipya</label>
+                                    <input type="password" class="form-control form-control-custom" id="confirmNewPassword">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">
+                                <i class="fas fa-times me-2"></i>Futa
+                            </button>
+                            <button type="submit" class="btn btn-primary-custom">
+                                <i class="fas fa-save me-2"></i>Hifadhi Mabadiliko
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // =====================
+        // SYSTEM VARIABLES
+        // =====================
+        let orderDetailsModal = null;
+        let orderHistoryModal = null;
+        let profileEditorModal = null;
+        let activityInterval = null;
+
+        // =====================
+        // INITIALIZATION
+        // =====================
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Initialize modals
+            orderDetailsModal = new bootstrap.Modal(document.getElementById('orderDetailsModal'));
+            orderHistoryModal = new bootstrap.Modal(document.getElementById('orderHistoryModal'));
+            profileEditorModal = new bootstrap.Modal(document.getElementById('profileEditorModal'));
+            
+            // Display user info
+            updateUserDisplay(currentUser);
+            
+            // Update current date and time
+            updateDateTime();
+            setInterval(updateDateTime, 1000);
+            
+            // Initialize user activity tracking
+            trackUserActivity(currentUser.id);
+            
+            // Load user activity stats
+            loadUserActivityStats(currentUser.id);
+            
+            // Load user orders
+            loadUserOrders(currentUser.id);
+            
+            // Load user account summary
+            loadUserAccountSummary(currentUser.id);
+            
+            // Load profile data
+            loadProfileData(currentUser);
+        });
+        
+        // =====================
+        // USER DISPLAY FUNCTIONS
+        // =====================
+        function updateUserDisplay(user) {
+            const fullName = user.name || `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Mteja';
+            document.getElementById('userName').textContent = fullName;
+            document.getElementById('userEmail').textContent = user.email || "Hakuna Barua Pepe";
+            document.getElementById('userPhone').textContent = user.phone || "Hakuna Nambari ya Simu";
+            
+            // Update avatar
+            const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=e74c3c&color=fff&size=80`;
+            document.getElementById('userAvatar').src = avatarUrl;
+        }
+        
+        function updateDateTime() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            document.getElementById('currentDateTime').textContent = now.toLocaleDateString('sw-TZ', options);
+        }
+        
+        function goBack() {
+            window.history.back();
+        }
+        
+        function logout() {
+            // Save current session before logout
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser) {
+                saveCurrentSession(currentUser.id);
+            }
+            
+            // Clear interval
+            if (activityInterval) {
+                clearInterval(activityInterval);
+            }
+            
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
+        
+        // =====================
+        // USER ACTIVITY TRACKING
+        // =====================
+        function trackUserActivity(userId) {
+            let userActivities = JSON.parse(localStorage.getItem('userActivities')) || {};
+            
+            if (!userActivities[userId]) {
+                userActivities[userId] = {
+                    loginCount: 0,
+                    totalTimeSpent: 0,
+                    lastLogin: null,
+                    currentSession: null,
+                    sessions: [],
+                    memberSince: new Date().toISOString()
+                };
+            }
+            
+            // Start new session
+            const sessionStart = Date.now();
+            userActivities[userId].loginCount++;
+            userActivities[userId].lastLogin = new Date().toISOString();
+            userActivities[userId].currentSession = sessionStart;
+            
+            localStorage.setItem('userActivities', JSON.stringify(userActivities));
+            
+            // Track time spent on page
+            let lastActive = Date.now();
+            
+            const activityEvents = ['mousemove', 'keypress', 'click', 'scroll', 'touchstart'];
+            
+            activityEvents.forEach(event => {
+                document.addEventListener(event, function() {
+                    lastActive = Date.now();
+                });
+            });
+            
+            // Update active time every minute
+            activityInterval = setInterval(() => {
+                const now = Date.now();
+                const timeSinceLastActive = now - lastActive;
+                
+                // Only count time if user was active in last 2 minutes
+                if (timeSinceLastActive < 2 * 60 * 1000) {
+                    // Update local storage
+                    let activities = JSON.parse(localStorage.getItem('userActivities'));
+                    if (activities && activities[userId]) {
+                        activities[userId].totalTimeSpent = (activities[userId].totalTimeSpent || 0) + 60000;
+                        localStorage.setItem('userActivities', JSON.stringify(activities));
+                    }
+                    
+                    // Update display
+                    loadUserActivityStats(userId);
+                }
+            }, 60000); // Check every minute
+            
+            // Save session when leaving page
+            window.addEventListener('beforeunload', function() {
+                saveCurrentSession(userId);
+                if (activityInterval) {
+                    clearInterval(activityInterval);
+                }
+            });
+        }
+        
+        function saveCurrentSession(userId) {
+            let activities = JSON.parse(localStorage.getItem('userActivities'));
+            if (activities && activities[userId] && activities[userId].currentSession) {
+                const sessionDuration = Date.now() - activities[userId].currentSession;
+                
+                activities[userId].sessions = activities[userId].sessions || [];
+                activities[userId].sessions.push({
+                    loginTime: new Date(activities[userId].currentSession).toISOString(),
+                    logoutTime: new Date().toISOString(),
+                    duration: sessionDuration
+                });
+                
+                // Keep only last 20 sessions
+                if (activities[userId].sessions.length > 20) {
+                    activities[userId].sessions = activities[userId].sessions.slice(-20);
+                }
+                
+                activities[userId].totalTimeSpent = (activities[userId].totalTimeSpent || 0) + sessionDuration;
+                activities[userId].currentSession = null;
+                
+                localStorage.setItem('userActivities', JSON.stringify(activities));
+            }
+        }
+        
+        function loadUserActivityStats(userId) {
+            const activities = JSON.parse(localStorage.getItem('userActivities')) || {};
+            const userActivity = activities[userId];
+            
+            if (!userActivity) return;
+            
+            // Update display
+            document.getElementById('totalTimeSpent').textContent = 
+                formatTime(userActivity.totalTimeSpent || 0);
+            
+            document.getElementById('loginCount').textContent = 
+                userActivity.loginCount || 0;
+            
+            document.getElementById('lastLoginTime').textContent = 
+                userActivity.lastLogin ? 
+                new Date(userActivity.lastLogin).toLocaleDateString('sw-TZ', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }) : 
+                'Kamwe';
+            
+            // Display session history
+            const sessionHistory = document.getElementById('sessionHistory');
+            if (userActivity.sessions && userActivity.sessions.length > 0) {
+                let sessionsHTML = '';
+                userActivity.sessions.slice(-5).reverse().forEach((session, index) => {
+                    sessionsHTML += `
+                        <div class="session-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div style="font-weight: 500; color: var(--dark-color); font-size: 0.95rem;">
+                                    <i class="fas fa-sign-in-alt me-2" style="color: var(--success-color); font-size: 1.1rem;"></i>
+                                    ${new Date(session.loginTime).toLocaleDateString('sw-TZ', { 
+                                        month: 'short', 
+                                        day: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    })}
+                                </div>
+                                <div style="color: var(--gray-color); font-size: 0.9rem; font-weight: 600;">
+                                    <i class="fas fa-clock me-1" style="color: var(--secondary-color);"></i>
+                                    ${formatTime(session.duration)}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                sessionHistory.innerHTML = sessionsHTML;
+            } else {
+                sessionHistory.innerHTML = `
+                    <div class="text-center py-3">
+                        <i class="fas fa-history fa-2x text-muted mb-3"></i>
+                        <p class="text-muted">Hakuna historia ya vikundi bado</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // =====================
+        // ORDER MANAGEMENT
+        // =====================
+        function loadUserOrders(userId) {
+            // Get user orders from localStorage
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const userOrders = orders.filter(order => order.userId == userId);
+            
+            const recentOrdersDiv = document.getElementById('recentOrders');
+            
+            if (userOrders.length > 0) {
+                // Sort orders by date (newest first)
+                userOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                let ordersHTML = '';
+                // Show only recent 3 orders
+                userOrders.slice(0, 3).forEach(order => {
+                    const orderDate = new Date(order.date).toLocaleDateString('sw-TZ', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    });
+                    
+                    const statusClass = getStatusClass(order.status);
+                    const statusText = getStatusText(order.status);
+                    const itemCount = order.items ? order.items.length : 0;
+                    const totalAmount = order.total || order.totalAmount || 0;
+                    
+                    ordersHTML += `
+                        <div class="order-card mb-3">
+                            <div class="p-3">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <span class="order-id">#${order.id || order.orderId}</span>
+                                        <span class="order-status ${statusClass} ms-2">${statusText}</span>
+                                    </div>
+                                    <div class="text-muted small">${orderDate}</div>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">${itemCount} Bidhaa</h6>
+                                        <p class="mb-0 text-muted small">Jumla: TZS ${formatNumber(totalAmount)}</p>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-primary" onclick="viewOrderDetails('${order.id || order.orderId}')">
+                                            <i class="fas fa-eye me-1"></i>Angalia
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                // Add view all orders button if there are more than 3 orders
+                if (userOrders.length > 3) {
+                    ordersHTML += `
+                        <div class="text-center mt-3">
+                            <button class="btn btn-primary-custom" onclick="showOrderHistory()">
+                                <i class="fas fa-list me-2"></i>Ona Oda Zote (${userOrders.length})
+                            </button>
+                        </div>
+                    `;
+                }
+                
+                recentOrdersDiv.innerHTML = ordersHTML;
+            } else {
+                // No orders
+                recentOrdersDiv.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">Huna oda bado</h5>
+                        <p class="text-muted">Oda yako ya kwanza itaonekana hapa</p>
+                        <button class="btn btn-primary-custom mt-2" onclick="window.location.href='products.html'">
+                            <i class="fas fa-shopping-cart me-2"></i>Nunua Sasa
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        
+        function loadUserAccountSummary(userId) {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const userOrders = orders.filter(order => order.userId == userId);
+            
+            // Update order count
+            document.getElementById('userOrderCount').textContent = userOrders.length;
+            
+            // Count active orders (pending or processing)
+            const activeOrders = userOrders.filter(order => {
+                const status = order.status ? order.status.toLowerCase() : '';
+                return status === 'pending' || status === 'processing' || status === 'inasubiri' || status === 'inaendelea';
+            }).length;
+            
+            document.getElementById('activeOrders').textContent = activeOrders;
+            
+            // Get member since date
+            const activities = JSON.parse(localStorage.getItem('userActivities')) || {};
+            const userActivity = activities[userId];
+            
+            if (userActivity && userActivity.memberSince) {
+                const memberSince = new Date(userActivity.memberSince);
+                const formattedDate = memberSince.toLocaleDateString('sw-TZ', {
+                    year: 'numeric',
+                    month: 'short'
+                });
+                document.getElementById('memberSince').textContent = formattedDate;
+            }
+        }
+        
+        function showOrderHistory() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return;
+            
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const userOrders = orders.filter(order => order.userId == currentUser.id);
+            
+            const orderHistoryBody = document.getElementById('orderHistoryBody');
+            
+            if (userOrders.length > 0) {
+                // Sort orders by date (newest first)
+                userOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                let historyHTML = '';
+                
+                userOrders.forEach(order => {
+                    const orderDate = new Date(order.date).toLocaleDateString('sw-TZ', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    
+                    const statusClass = getStatusClass(order.status);
+                    const statusText = getStatusText(order.status);
+                    const itemCount = order.items ? order.items.length : 0;
+                    const totalAmount = order.total || order.totalAmount || 0;
+                    
+                    historyHTML += `
+                        <tr>
+                            <td><span class="order-id">${order.id || order.orderId}</span></td>
+                            <td>${orderDate}</td>
+                            <td>${itemCount} Bidhaa</td>
+                            <td>TZS ${formatNumber(totalAmount)}</td>
+                            <td><span class="order-status ${statusClass}">${statusText}</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-primary" onclick="viewOrderDetails('${order.id || order.orderId}')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                orderHistoryBody.innerHTML = historyHTML;
+            } else {
+                orderHistoryBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center py-5">
+                            <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">Huna oda bado</h5>
+                            <p class="text-muted">Oda yako ya kwanza itaonekana hapa</p>
+                        </td>
+                    </tr>
+                `;
+            }
+            
+            orderHistoryModal.show();
+        }
+        
+        function viewOrderDetails(orderId) {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const order = orders.find(o => (o.id === orderId) || (o.orderId === orderId));
+            
+            if (!order) {
+                alert("Oda haijapatikana!");
+                return;
+            }
+            
+            const orderDetailsContent = document.getElementById('orderDetailsContent');
+            
+            const orderDate = new Date(order.date).toLocaleDateString('sw-TZ', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            const statusClass = getStatusClass(order.status);
+            const statusText = getStatusText(order.status);
+            const totalAmount = order.total || order.totalAmount || 0;
+            const deliveryFee = order.delivery || 0;
+            const subtotal = order.subtotal || (totalAmount - deliveryFee);
+            
+            let itemsHTML = '';
+            if (order.items && order.items.length > 0) {
+                order.items.forEach(item => {
+                    const itemTotal = (item.price || 0) * (item.quantity || 1);
+                    itemsHTML += `
+                        <div class="order-detail-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">${item.name || 'Bidhaa'}</h6>
+                                    <p class="mb-0 text-muted small">${item.quantity || 1} x TZS ${formatNumber(item.price || 0)}</p>
+                                </div>
+                                <div class="fw-bold">
+                                    TZS ${formatNumber(itemTotal)}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                itemsHTML = `
+                    <div class="order-detail-item">
+                        <p class="text-muted">Hakuna maelezo ya bidhaa</p>
+                    </div>
+                `;
+            }
+            
+            orderDetailsContent.innerHTML = `
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <h6 class="mb-1">Nambari ya Oda:</h6>
+                            <h4 class="text-primary">#${order.id || order.orderId}</h4>
+                        </div>
+                        <div>
+                            <span class="order-status ${statusClass}">${statusText}</span>
+                        </div>
+                    </div>
+                    
+                    <p class="mb-2"><i class="fas fa-calendar me-2"></i>Tarehe: ${orderDate}</p>
+                    <p class="mb-2"><i class="fas fa-money-bill-wave me-2"></i>Njia ya Malipo: ${order.paymentMethod || 'Hajulikani'}</p>
+                    <p class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>Anwani: ${order.deliveryAddress || 'Hajulikani'}</p>
+                </div>
+                
+                <h6 class="section-title mb-3" style="font-size: 1.1rem;">
+                    <i class="fas fa-boxes me-2"></i>Bidhaa Zilizonunuliwa
+                </h6>
+                
+                ${itemsHTML}
+                
+                <div class="mt-4 pt-3 border-top">
+                    <div class="row">
+                        <div class="col-6">
+                            <p class="mb-1">Jumla ya Bidhaa:</p>
+                            <p class="mb-1">Ada ya Uwasilishaji:</p>
+                            <h5 class="mt-3">Jumla Kuu:</h5>
+                        </div>
+                        <div class="col-6 text-end">
+                            <p class="mb-1 fw-bold">TZS ${formatNumber(subtotal)}</p>
+                            <p class="mb-1 fw-bold">${deliveryFee === 0 ? 'BURE' : `TZS ${formatNumber(deliveryFee)}`}</p>
+                            <h5 class="mt-3 text-primary">TZS ${formatNumber(totalAmount)}</h5>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-4 pt-3 border-top">
+                    <h6 class="mb-3">Ufuatiliaji wa Oda:</h6>
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-secondary-custom">
+                            <i class="fas fa-phone me-2"></i>Wasiliana na Mteja
+                        </button>
+                        <button class="btn btn-primary-custom" onclick="trackDelivery('${order.id || order.orderId}')">
+                            <i class="fas fa-shipping-fast me-2"></i>Fuatilia Usafirishaji
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            orderDetailsModal.show();
+        }
+        
+        function trackDelivery(orderId) {
+            alert(`Utafuatilia usafirishaji wa oda #${orderId}\n(Mfumo utaongezwa baadaye)`);
+            // You can implement GPS tracking or delivery status updates here
+        }
+        
+        // =====================
+        // PROFILE MANAGEMENT
+        // =====================
+        function loadProfileData(user) {
+            // Populate profile form with user data
+            document.getElementById('editFirstName').value = user.firstName || '';
+            document.getElementById('editLastName').value = user.lastName || '';
+            document.getElementById('editEmail').value = user.email || '';
+            document.getElementById('editPhone').value = user.phone || '';
+            document.getElementById('editAddress').value = user.address || '';
+            document.getElementById('editArea').value = user.area || '';
+        }
+        
+        function showProfileEditor() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return;
+            
+            loadProfileData(currentUser);
+            profileEditorModal.show();
+        }
+        
+        function updateProfile(event) {
+            event.preventDefault();
+            
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) return;
+            
+            // Get form values
+            const firstName = document.getElementById('editFirstName').value.trim();
+            const lastName = document.getElementById('editLastName').value.trim();
+            const email = document.getElementById('editEmail').value.trim();
+            const phone = document.getElementById('editPhone').value.trim();
+            const address = document.getElementById('editAddress').value.trim();
+            const area = document.getElementById('editArea').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmNewPassword').value;
+            
+            // Validate passwords if provided
+            if (newPassword) {
+                if (newPassword.length < 6) {
+                    alert("Nenosiri lazima liwe na angalau herufi 6!");
+                    return;
+                }
+                if (newPassword !== confirmPassword) {
+                    alert("Nenosiri hazifanani!");
+                    return;
+                }
+            }
+            
+            // Get all users
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Find current user
+            const userIndex = users.findIndex(u => u.email === currentUser.email);
+            
+            if (userIndex === -1) {
+                alert("Mtumiaji hakupatikana!");
+                return;
+            }
+            
+            // Check if email is being changed and if it's already taken
+            if (email !== currentUser.email) {
+                const emailExists = users.some(u => u.email === email && u.id !== currentUser.id);
+                if (emailExists) {
+                    alert("Barua pepe hii tayari inatumika!");
+                    return;
+                }
+            }
+            
+            // Update user data
+            users[userIndex] = {
+                ...users[userIndex],
+                firstName: firstName,
+                lastName: lastName,
+                name: `${firstName} ${lastName}`.trim(),
+                email: email,
+                phone: phone,
+                address: address,
+                area: area,
+                password: newPassword || users[userIndex].password, // Keep old password if not changed
+                updatedAt: new Date().toISOString()
+            };
+            
+            // Update current user in localStorage
+            const updatedUser = users[userIndex];
+            localStorage.setItem('currentUser', JSON.stringify(updatedUser));
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            // Update display
+            updateUserDisplay(updatedUser);
+            
+            // Close modal
+            profileEditorModal.hide();
+            
+            // Show success message
+            alert("Maelezo yako yamehifadhiwa kikamilifu!");
+        }
+        
+        // =====================
+        // HELPER FUNCTIONS
+        // =====================
+        function getStatusClass(status) {
+            if (!status) return 'status-pending';
+            
+            const statusLower = status.toLowerCase();
+            if (statusLower.includes('complete') || statusLower.includes('kamilifu') || statusLower.includes('kamilika')) {
+                return 'status-completed';
+            } else if (statusLower.includes('process') || statusLower.includes('endelea')) {
+                return 'status-processing';
+            } else {
+                return 'status-pending';
+            }
+        }
+        
+        function getStatusText(status) {
+            if (!status) return 'Inasubiri';
+            
+            const statusLower = status.toLowerCase();
+            if (statusLower.includes('complete') || statusLower.includes('kamilifu') || statusLower.includes('kamilika')) {
+                return 'Imekamilika';
+            } else if (statusLower.includes('process') || statusLower.includes('endelea')) {
+                return 'Inaendelea';
+            } else if (statusLower.includes('ship') || statusLower.includes('safiri')) {
+                return 'Inasafirishwa';
+            } else {
+                return 'Inasubiri';
+            }
+        }
+        
+        function formatTime(milliseconds) {
+            const seconds = Math.floor(milliseconds / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+            
+            if (days > 0) {
+                return `${days} siku ${hours % 24} saa`;
+            } else if (hours > 0) {
+                return `${hours} saa ${minutes % 60} dak`;
+            } else if (minutes > 0) {
+                return `${minutes} dakika`;
+            } else {
+                return `${seconds} sekunde`;
+            }
+        }
+        
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+    </script>
+</body>
+</html>

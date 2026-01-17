@@ -1,0 +1,2394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mayran Online Shop - Premium Electronics Store</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS for Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #34495e;
+            --accent: #e74c3c;
+            --accent-light: #ff6b6b;
+            --accent-dark: #c0392b;
+            --success: #27ae60;
+            --info: #3498db;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --purple: #9b59b6;
+            --teal: #1abc9c;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            --gradient-5: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            --gradient-6: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+            --gradient-primary: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            --gradient-secondary: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            --gradient-success: linear-gradient(135deg, #27ae60 0%, #219653 100%);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        /* Marquee Section */
+        .marquee-container {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 12px 0;
+            font-weight: 600;
+            overflow: hidden;
+            position: relative;
+            z-index: 1001;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .marquee-content {
+            display: flex;
+            animation: marquee 25s linear infinite;
+        }
+        
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            margin: 0 40px;
+            white-space: nowrap;
+            font-size: 0.95rem;
+        }
+        
+        .marquee-item i {
+            margin-right: 10px;
+            color: #ffd700;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        /* Header & Navigation */
+        header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 2.2rem;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo span {
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            margin-right: 10px;
+            color: #ffd700;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .nav-link {
+            color: white !important;
+            font-weight: 500;
+            margin: 0 8px;
+            transition: all 0.3s;
+            position: relative;
+            padding: 8px 15px !important;
+            border-radius: 5px;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: 0;
+            left: 0;
+            background-color: #ffd700;
+            transition: width 0.3s;
+            border-radius: 3px;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-link:hover {
+            color: #ffd700 !important;
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Hero Slideshow */
+        .hero-slideshow {
+            position: relative;
+            height: 80vh;
+            overflow: hidden;
+            margin-top: 0;
+        }
+        
+        .slideshow-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+        
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(44, 62, 80, 0.85), rgba(52, 73, 94, 0.7));
+        }
+        
+        .slide-content {
+            position: relative;
+            z-index: 2;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            max-width: 800px;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .slide-content h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.8);
+            background: linear-gradient(to right, #ffffff, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .slide-content p {
+            font-size: 1.4rem;
+            margin-bottom: 35px;
+            opacity: 0.95;
+            line-height: 1.6;
+        }
+        
+        .slide-indicators {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            z-index: 3;
+        }
+        
+        .indicator {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            margin: 0 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .indicator.active {
+            background: #ffd700;
+            transform: scale(1.3);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        /* Countdown Timer - IMPROVED */
+        .countdown-timer {
+            background: var(--gradient-secondary);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin: 40px auto;
+            max-width: 850px;
+            box-shadow: 0 15px 35px rgba(44, 62, 80, 0.2);
+            animation: bounceIn 1s;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .countdown-timer::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+        
+        .countdown-timer::after {
+            content: '';
+            position: absolute;
+            bottom: -50%;
+            left: -50%;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 50%;
+        }
+        
+        .countdown-timer h3 {
+            margin-bottom: 25px;
+            font-weight: 700;
+            color: #ffd700;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .countdown-box {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .countdown-box:hover {
+            transform: translateY(-8px) scale(1.05);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .countdown-value {
+            font-size: 3rem;
+            font-weight: 800;
+            display: block;
+            color: #ffd700;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .countdown-label {
+            font-size: 1rem;
+            opacity: 0.9;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        /* Product Cards */
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            height: 100%;
+            position: relative;
+            border: none;
+        }
+        
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.4s;
+            transform-origin: left;
+        }
+        
+        .product-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 25px 50px rgba(231, 76, 60, 0.15);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--danger);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            z-index: 2;
+            animation: pulse 2s infinite;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        .product-img {
+            height: 220px;
+            object-fit: cover;
+            width: 100%;
+            transition: transform 0.5s ease-out;
+        }
+        
+        .product-card:hover .product-img {
+            transform: scale(1.1);
+        }
+        
+        .product-title {
+            font-weight: 700;
+            color: var(--primary);
+            transition: color 0.3s;
+            font-size: 1.1rem;
+        }
+        
+        .product-card:hover .product-title {
+            color: var(--accent);
+        }
+        
+        .price {
+            color: var(--accent);
+            font-weight: 800;
+            font-size: 1.5rem;
+        }
+        
+        .old-price {
+            text-decoration: line-through;
+            color: #95a5a6;
+            font-size: 1rem;
+            margin-left: 10px;
+        }
+        
+        /* Category Cards */
+        .category-card {
+            height: 220px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.4s;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .category-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.25);
+        }
+        
+        .category-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease-out;
+        }
+        
+        .category-card:hover img {
+            transform: scale(1.15);
+        }
+        
+        .category-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(44, 62, 80, 0.9), transparent);
+            display: flex;
+            align-items: flex-end;
+            padding: 25px;
+        }
+        
+        .category-title {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 800;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+        }
+        
+        /* Dashboard Cards */
+        .dashboard-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            height: 100%;
+            margin-bottom: 25px;
+        }
+        
+        .stat-box {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+        
+        .stat-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-right: 20px;
+            color: white;
+        }
+        
+        .stat-content h5 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .session-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--accent);
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .animate-left {
+            animation: slideInLeft 1s ease-out;
+        }
+        
+        .animate-right {
+            animation: slideInRight 1s ease-out;
+        }
+        
+        /* Floating Elements */
+        .floating {
+            animation: floating 3.5s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        
+        /* Special Offers */
+        .special-offer {
+            background: var(--gradient-primary);
+            border-radius: 25px;
+            padding: 40px;
+            color: white;
+            margin: 50px 0;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(231, 76, 60, 0.2);
+        }
+        
+        .special-offer::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            top: -200px;
+            right: -150px;
+        }
+        
+        .special-offer::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            bottom: -150px;
+            left: -100px;
+        }
+        
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 400px;
+            height: 100%;
+            background: white;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
+            z-index: 1050;
+            transition: right 0.4s ease;
+            overflow-y: auto;
+        }
+        
+        .cart-sidebar.open {
+            right: 0;
+        }
+        
+        /* Footer */
+        footer {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 70px 0 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 250px;
+            background: rgba(255, 255, 255, 0.08);
+            top: -150px;
+            left: -50%;
+            transform: rotate(-5deg);
+        }
+        
+        .footer-heading {
+            color: #ffd700;
+            font-weight: 800;
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+            font-size: 1.4rem;
+        }
+        
+        .footer-heading::after {
+            content: '';
+            position: absolute;
+            width: 60px;
+            height: 4px;
+            background: #ffd700;
+            bottom: -12px;
+            left: 0;
+            border-radius: 2px;
+        }
+        
+        /* Button Styles */
+        .btn-glow {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 35px;
+            font-weight: 700;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-glow:hover {
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(231, 76, 60, 0.4);
+            color: white;
+        }
+        
+        .btn-glow::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+        
+        .btn-glow:hover::after {
+            left: 100%;
+        }
+        
+        /* WhatsApp Button */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 70px;
+            height: 70px;
+            background: #25D366;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: all 0.4s;
+            animation: pulse 2s infinite;
+        }
+        
+        .whatsapp-btn:hover {
+            transform: scale(1.15) rotate(10deg);
+            box-shadow: 0 12px 30px rgba(37, 211, 102, 0.6);
+            color: white;
+        }
+        
+        /* Payment Methods */
+        .payment-method-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .payment-method-card:hover {
+            border-color: var(--accent);
+            background: rgba(231, 76, 60, 0.05);
+            transform: translateY(-5px);
+        }
+        
+        .payment-method-card.selected {
+            border-color: var(--accent);
+            background: rgba(231, 76, 60, 0.1);
+            box-shadow: 0 10px 20px rgba(231, 76, 60, 0.1);
+        }
+        
+        /* Google Maps Container */
+        .map-container {
+            height: 400px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            margin: 30px 0;
+        }
+        
+        #map {
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+        }
+        
+        /* Login/Register Modal */
+        .auth-modal {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        
+        .auth-card {
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Admin Login Button */
+        .admin-login-btn {
+            position: fixed;
+            bottom: 120px;
+            right: 40px;
+            background: var(--gradient-secondary);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            z-index: 999;
+            box-shadow: 0 8px 25px rgba(44, 62, 80, 0.3);
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .admin-login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(44, 62, 80, 0.4);
+            color: white;
+        }
+        
+        /* Developer Info */
+        .developer-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #ffd700;
+        }
+        
+        .developer-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ffd700;
+            margin-right: 15px;
+        }
+        
+        /* Order Tracking Results */
+        .tracking-result {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        
+        .tracking-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 30px 0;
+        }
+        
+        .tracking-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #e0e0e0;
+            z-index: 1;
+        }
+        
+        .tracking-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+        
+        .step-icon.active {
+            background: var(--success);
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .step-label {
+            font-size: 0.85rem;
+            color: #666;
+            text-align: center;
+        }
+        
+        .step-label.active {
+            color: var(--success);
+            font-weight: 600;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .slide-content p {
+                font-size: 1.1rem;
+            }
+            
+            .countdown-value {
+                font-size: 2.2rem;
+            }
+            
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+            
+            .marquee-item {
+                margin: 0 20px;
+                font-size: 0.85rem;
+            }
+            
+            .whatsapp-btn {
+                width: 60px;
+                height: 60px;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .admin-login-btn {
+                bottom: 100px;
+                right: 20px;
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .special-offer {
+                padding: 25px;
+            }
+            
+            .tracking-steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .tracking-steps::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/255767479501" class="whatsapp-btn" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Admin Login Button -->
+    <a href="admin-login.html" class="admin-login-btn">
+        <i class="fas fa-lock me-1"></i> Admin Login
+    </a>
+
+    <!-- Marquee -->
+    <div class="marquee-container">
+        <div class="marquee-content">
+            <div class="marquee-item">
+                <i class="fas fa-shipping-fast"></i> Free Delivery in Dar es Salaam on Orders Over TZS 50,000
+            </div>
+            <div class="marquee-item">
+                <i class="fas fa-tag"></i> End of Year Sale! Up to 50% Off on All Electronics
+            </div>
+            <div class="marquee-item">
+                <i class="fas fa-shield-alt"></i> Secure Payments: M-Pesa, Visa, QR Code, Tigo Pesa
+            </div>
+            <div class="marquee-item">
+                <i class="fas fa-gift"></i> Buy 2 Get 1 Free on Selected Products
+            </div>
+            <div class="marquee-item">
+                <i class="fas fa-clock"></i> Same Day Delivery in Dar es Salaam
+            </div>
+            <div class="marquee-item">
+                <i class="fab fa-whatsapp"></i> WhatsApp Order: +255 767 479 501
+            </div>
+            <div class="marquee-item">
+                <i class="fas fa-map-marker-alt"></i> Delivery Across Dar es Salaam
+            </div>
+        </div>
+    </div>
+
+    <!-- Header & Navigation -->
+    <header>
+        <nav class="navbar navbar-expand-lg py-3">
+            <div class="container">
+                <a class="navbar-brand logo" href="index.html">
+                    <i class="fas fa-crown logo-icon"></i>
+                    May<span style="color: #ffd700;">ran</span> Shop
+                </a>
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <i class="fas fa-bars text-white fa-lg"></i>
+                </button>
+                
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="index.html"><i class="fas fa-home me-1"></i> Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="products.html"><i class="fas fa-shopping-bag me-1"></i> Products</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#categories"><i class="fas fa-th-large me-1"></i> Categories</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#tracking"><i class="fas fa-map-marked-alt me-1"></i> Track Order</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#contact"><i class="fas fa-phone-alt me-1"></i> Contact</a>
+                        </li>
+                        <li class="nav-item dropdown" id="userDropdownContainer">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user me-1"></i> <span id="userName">Account</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="dashboard.html"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
+                                <li><a class="dropdown-item" href="orders.html"><i class="fas fa-shopping-bag me-2"></i> My Orders</a></li>
+                                <li><a class="dropdown-item" href="settings.html"><i class="fas fa-cog me-2"></i> Settings</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" id="loginBtn"><i class="fas fa-sign-in-alt me-2"></i> Login</a></li>
+                                <li><a class="dropdown-item" href="#" id="registerBtn"><i class="fas fa-user-plus me-2"></i> Register</a></li>
+                                <li id="logoutItem" style="display: none;"><a class="dropdown-item text-danger" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-glow ms-3" href="#" id="cartBtn">
+                                <i class="fas fa-shopping-cart me-2"></i> Cart <span id="cartCount" class="badge bg-warning">0</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Slideshow -->
+    <section class="hero-slideshow" id="home">
+        <div class="slideshow-container">
+            <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+                <div class="slide-content">
+                    <h1>Welcome to May<span style="color: #ffd700;">ran</span> Online Shop</h1>
+                    <p>Your premier destination for the latest smartphones, electronics, and gadgets in Tanzania. Secure payments, fast delivery, and premium customer service.</p>
+                    <div class="mt-4">
+                        <a href="products.html" class="btn btn-glow btn-lg me-3"><i class="fas fa-shopping-cart me-2"></i> Shop Now</a>
+                        <a href="#categories" class="btn btn-outline-light btn-lg"><i class="fas fa-th-large me-2"></i> Browse Categories</a>
+                    </div>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1556656793-08538906a9f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+                <div class="slide-content">
+                    <h1>Premium Smartphones</h1>
+                    <p>Latest smartphones with advanced features, high-resolution cameras, and 5G connectivity at unbeatable prices in Dar es Salaam.</p>
+                    <div class="mt-4">
+                        <a href="products.html?category=smartphones" class="btn btn-glow btn-lg me-3"><i class="fas fa-mobile-alt me-2"></i> View Phones</a>
+                        <a href="dashboard.html" class="btn btn-outline-light btn-lg"><i class="fas fa-tachometer-alt me-2"></i> My Dashboard</a>
+                    </div>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1593640408182-31c70c8268f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+                <div class="slide-content">
+                    <h1>Mega Year End Sale!</h1>
+                    <p>Massive discounts on all electronics! Up to 50% off on smartphones, TVs, headphones, laptops, and smartwatches. Limited time only!</p>
+                    <div class="mt-4">
+                        <a href="#special-offers" class="btn btn-glow btn-lg me-3"><i class="fas fa-gift me-2"></i> View Offers</a>
+                        <a href="products.html" class="btn btn-outline-light btn-lg"><i class="fas fa-store me-2"></i> Shop All</a>
+                    </div>
+                </div>
+            </div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+                <div class="slide-content">
+                    <h1>Premium Electronics</h1>
+                    <p>Experience immersive sound with premium headphones, crystal-clear visuals with 4K TVs, and smart living with our latest gadgets.</p>
+                    <div class="mt-4">
+                        <a href="products.html?category=electronics" class="btn btn-glow btn-lg me-3"><i class="fas fa-headphones me-2"></i> Shop Electronics</a>
+                        <a href="#tracking" class="btn btn-outline-light btn-lg"><i class="fas fa-shipping-fast me-2"></i> Track Delivery</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slide-indicators">
+            <div class="indicator active" data-index="0"></div>
+            <div class="indicator" data-index="1"></div>
+            <div class="indicator" data-index="2"></div>
+            <div class="indicator" data-index="3"></div>
+        </div>
+    </section>
+
+    <!-- Countdown Timer - IMPROVED -->
+    <section class="py-5">
+        <div class="container">
+            <div class="countdown-timer text-center">
+                <h3><i class="fas fa-fire me-2"></i> YEAR END SALE ENDS IN:</h3>
+                <div class="row justify-content-center">
+                    <div class="col-6 col-md-3 mb-4">
+                        <div class="countdown-box">
+                            <span class="countdown-value" id="days">00</span>
+                            <span class="countdown-label">Days</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 mb-4">
+                        <div class="countdown-box">
+                            <span class="countdown-value" id="hours">00</span>
+                            <span class="countdown-label">Hours</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 mb-4">
+                        <div class="countdown-box">
+                            <span class="countdown-value" id="minutes">00</span>
+                            <span class="countdown-label">Minutes</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3 mb-4">
+                        <div class="countdown-box">
+                            <span class="countdown-value" id="seconds">00</span>
+                            <span class="countdown-label">Seconds</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="mt-3 fs-5" style="position: relative; z-index: 2;">Hurry! Limited stock available at these amazing prices. Don't miss out!</p>
+                <a href="products.html" class="btn btn-glow px-5 mt-2" style="position: relative; z-index: 2;">SHOP NOW <i class="fas fa-arrow-right ms-2"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="py-5 bg-light" id="categories">
+        <div class="container">
+            <h2 class="text-center mb-5 animate-on-scroll">Shop By Category</h2>
+            <div class="row">
+                <div class="col-md-3 col-sm-6 mb-4 animate-on-scroll">
+                    <a href="products.html?category=smartphones" class="text-decoration-none">
+                        <div class="category-card">
+                            <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Smartphones">
+                            <div class="category-overlay">
+                                <h4 class="category-title"><i class="fas fa-mobile-alt me-2"></i> Smartphones</h4>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-4 animate-on-scroll">
+                    <a href="products.html?category=laptops" class="text-decoration-none">
+                        <div class="category-card">
+                            <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Laptops">
+                            <div class="category-overlay">
+                                <h4 class="category-title"><i class="fas fa-laptop me-2"></i> Laptops</h4>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-4 animate-on-scroll">
+                    <a href="products.html?category=tvs" class="text-decoration-none">
+                        <div class="category-card">
+                            <img src="https://images.unsplash.com/photo-1593305841991-05c297ba4575?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="TVs">
+                            <div class="category-overlay">
+                                <h4 class="category-title"><i class="fas fa-tv me-2"></i> Smart TVs</h4>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-4 animate-on-scroll">
+                    <a href="products.html?category=headphones" class="text-decoration-none">
+                        <div class="category-card">
+                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Headphones">
+                            <div class="category-overlay">
+                                <h4 class="category-title"><i class="fas fa-headphones me-2"></i> Headphones</h4>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="py-5" id="products-section">
+        <div class="container">
+            <h2 class="text-center mb-5 animate-on-scroll">Featured Products</h2>
+            <div class="row" id="featuredProducts">
+                <!-- Products will be loaded dynamically -->
+            </div>
+            <div class="text-center mt-5 animate-on-scroll">
+                <a href="products.html" class="btn btn-glow btn-lg">
+                    <i class="fas fa-store me-2"></i> View All Products
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Special Offers -->
+    <section class="py-5" id="special-offers">
+        <div class="container">
+            <div class="special-offer">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h2 class="mb-3">MEGA YEAR END SALE!</h2>
+                        <p class="mb-4 fs-5">Get massive discounts on all electronics. Limited time offer! Shop now and save big on your favorite gadgets. Free delivery in Dar es Salaam for orders above TZS 50,000.</p>
+                        <div class="d-flex flex-wrap gap-3">
+                            <a href="products.html" class="btn btn-light btn-lg">
+                                <i class="fas fa-shopping-cart me-2"></i> Shop Now
+                            </a>
+                            <a href="https://wa.me/255767479501" class="btn btn-outline-light btn-lg" target="_blank">
+                                <i class="fab fa-whatsapp me-2"></i> WhatsApp Order
+                            </a>
+                            <a href="dashboard.html" class="btn btn-outline-light btn-lg">
+                                <i class="fas fa-tachometer-alt me-2"></i> My Dashboard
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="floating">
+                            <h1 class="display-1 fw-bold">50%</h1>
+                            <h4 class="fw-bold">OFF</h4>
+                            <p class="mt-3">On Selected Items</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Delivery Tracking - IMPROVED -->
+    <section class="py-5 bg-light" id="tracking">
+        <div class="container">
+            <h2 class="text-center mb-5 animate-on-scroll">Track Your Order</h2>
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 animate-on-scroll">
+                    <div class="dashboard-card">
+                        <h4 class="mb-4"><i class="fas fa-map-marked-alt me-2"></i> Order Tracking</h4>
+                        <div class="mb-4">
+                            <label for="orderNumber" class="form-label fw-bold">Enter Order Number:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control form-control-lg" id="orderNumber" placeholder="e.g., ORD-2023-00125">
+                                <button class="btn btn-glow" type="button" id="trackOrderBtn">
+                                    <i class="fas fa-search me-2"></i> Track
+                                </button>
+                            </div>
+                        </div>
+                        <div id="trackingResult" class="mt-4">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Enter your order number to track delivery status
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <h5><i class="fas fa-shipping-fast me-2"></i> Delivery Information</h5>
+                            <ul class="list-unstyled mt-3">
+                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Same day delivery in Dar es Salaam</li>
+                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Free delivery for orders above TZS 50,000</li>
+                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Real-time tracking available</li>
+                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Contact delivery agent directly</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4 animate-on-scroll">
+                    <div class="dashboard-card">
+                        <h4 class="mb-4"><i class="fas fa-map-marker-alt me-2"></i> Delivery Coverage Map</h4>
+                        <div class="map-container">
+                            <div id="map"></div>
+                        </div>
+                        <div class="mt-4">
+                            <h5>Delivery Areas in Dar es Salaam:</h5>
+                            <div class="row mt-3">
+                                <div class="col-6">
+                                    <ul>
+                                        <li><i class="fas fa-map-pin text-primary me-2"></i> City Center</li>
+                                        <li><i class="fas fa-map-pin text-primary me-2"></i> Kinondoni</li>
+                                        <li><i class="fas fa-map-pin text-primary me-2"></i> Ilala</li>
+                                    </ul>
+                                </div>
+                                <div class="col-6">
+                                    <ul>
+                                        <li><i class="fas fa-map-pin text-primary me-2"></i> Temeke</li>
+                                        <li><i class="fas fa-map-pin text-primary me-2"></i> Ubungo</li>
+                                        <li><i class="fas fa-map-pin text-primary me-2"></i> Kigamboni</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <p class="mt-3"><small><i class="fas fa-clock me-1"></i> Same day delivery for orders before 2 PM</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Payment Methods -->
+    <section class="py-5" id="payment-methods">
+        <div class="container">
+            <h2 class="text-center mb-5 animate-on-scroll">Secure Payment Methods</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-3 col-sm-6 mb-4 animate-on-scroll">
+                    <div class="payment-method-card">
+                        <div class="display-1 mb-3 text-primary">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h5>M-Pesa</h5>
+                        <p class="text-muted">Instant mobile payments</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-4 animate-on-scroll">
+                    <div class="payment-method-card">
+                        <div class="display-1 mb-3 text-info">
+                            <i class="fab fa-cc-visa"></i>
+                        </div>
+                        <h5>Visa/MasterCard</h5>
+                        <p class="text-muted">Secure card payments</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-4 animate-on-scroll">
+                    <div class="payment-method-card">
+                        <div class="display-1 mb-3 text-success">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <h5>QR Code</h5>
+                        <p class="text-muted">Scan & pay instantly</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-4 animate-on-scroll">
+                    <div class="payment-method-card">
+                        <div class="display-1 mb-3 text-warning">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <h5>Tigo Pesa</h5>
+                        <p class="text-muted">Mobile money payments</p>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4 animate-on-scroll">
+                <p class="lead">All transactions are encrypted and secure. We never store your payment details.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-5 bg-light" id="contact">
+        <div class="container">
+            <h2 class="text-center mb-5 animate-on-scroll">Contact Us</h2>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4 animate-on-scroll">
+                    <div class="dashboard-card">
+                        <h4 class="mb-4"><i class="fas fa-headset me-2"></i> Customer Support</h4>
+                        <div class="mb-4">
+                            <h5><i class="fas fa-phone-alt text-primary me-2"></i> Phone Support</h5>
+                            <p class="ms-4">+255 767 479 501 (WhatsApp)</p>
+                            <p class="ms-4">+255 767 479 502 (Voice Calls)</p>
+                        </div>
+                        <div class="mb-4">
+                            <h5><i class="fas fa-envelope text-primary me-2"></i> Email</h5>
+                            <p class="ms-4">info@mayranshop.co.tz</p>
+                            <p class="ms-4">support@mayranshop.co.tz</p>
+                        </div>
+                        <div class="mb-4">
+                            <h5><i class="fas fa-clock text-primary me-2"></i> Business Hours</h5>
+                            <p class="ms-4">Monday - Saturday: 8:00 AM - 9:00 PM</p>
+                            <p class="ms-4">Sunday: 10:00 AM - 7:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4 animate-on-scroll">
+                    <div class="dashboard-card">
+                        <h4 class="mb-4"><i class="fas fa-map-marker-alt me-2"></i> Our Location</h4>
+                        <div class="mb-4">
+                            <h5><i class="fas fa-building text-primary me-2"></i> Main Office</h5>
+                            <p class="ms-4">Dar es Salaam, Tanzania</p>
+                            <p class="ms-4">P.O. Box 12345</p>
+                        </div>
+                        <div class="mb-4">
+                            <h5><i class="fas fa-warehouse text-primary me-2"></i> Warehouse</h5>
+                            <p class="ms-4">Kinondoni Industrial Area</p>
+                            <p class="ms-4">Dar es Salaam</p>
+                        </div>
+                        <div class="mb-4">
+                            <h5><i class="fas fa-truck text-primary me-2"></i> Delivery Coverage</h5>
+                            <p class="ms-4">All areas in Dar es Salaam</p>
+                            <p class="ms-4">Major cities across Tanzania</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4 animate-on-scroll">
+                    <div class="dashboard-card">
+                        <h4 class="mb-4"><i class="fab fa-whatsapp me-2"></i> Quick WhatsApp Order</h4>
+                        <p class="mb-4">For instant support, order placement, or inquiries, contact us directly on WhatsApp. We respond within minutes during business hours.</p>
+                        <div class="text-center">
+                            <a href="https://wa.me/255767479501?text=Hello%20Mayran%20Shop,%20I%20would%20like%20to%20place%20an%20order" 
+                               class="btn btn-success btn-lg w-100" target="_blank">
+                                <i class="fab fa-whatsapp me-2"></i> Chat on WhatsApp
+                            </a>
+                            <p class="mt-3 text-muted"><i class="fas fa-bolt me-1"></i> Average response time: 5 minutes</p>
+                        </div>
+                        <div class="mt-4">
+                            <h5><i class="fas fa-bullhorn me-2"></i> Social Media</h5>
+                            <div class="d-flex gap-3 mt-3">
+                                <a href="#" class="btn btn-outline-primary"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" class="btn btn-outline-info"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="btn btn-outline-danger"><i class="fab fa-instagram"></i></a>
+                                <a href="#" class="btn btn-outline-success"><i class="fab fa-whatsapp"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4><i class="fas fa-shopping-cart me-2"></i> Your Shopping Cart</h4>
+                <button class="btn btn-sm btn-outline-danger" id="closeCart">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div id="cartItems">
+                <p class="text-center py-5" id="emptyCartMsg">
+                    <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i><br>
+                    Your cart is empty
+                </p>
+            </div>
+            
+            <div class="mt-4 d-none" id="cartTotalSection">
+                <hr>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="mb-0">Subtotal:</h5>
+                    <h5 class="mb-0" id="cartSubtotal">TZS 0</h5>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span>Delivery:</span>
+                    <span id="deliveryFee">TZS 0</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5>Total:</h5>
+                    <h4 class="text-accent" id="cartTotal">TZS 0</h4>
+                </div>
+                
+                <div class="mt-4">
+                    <h6 class="mb-3"><i class="fas fa-credit-card me-2"></i> Select Payment Method:</h6>
+                    <div class="row g-2 mb-4">
+                        <div class="col-6">
+                            <div class="payment-method-card small text-center" data-method="mpesa">
+                                <i class="fas fa-mobile-alt fa-2x mb-2"></i>
+                                <div>M-Pesa</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="payment-method-card small text-center" data-method="visa">
+                                <i class="fab fa-cc-visa fa-2x mb-2"></i>
+                                <div>Visa Card</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="payment-method-card small text-center" data-method="qrcode">
+                                <i class="fas fa-qrcode fa-2x mb-2"></i>
+                                <div>QR Code</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="payment-method-card small text-center" data-method="tigopesa">
+                                <i class="fas fa-money-bill-wave fa-2x mb-2"></i>
+                                <div>Tigo Pesa</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <input type="hidden" id="selectedPaymentMethod" value="mpesa">
+                    
+                    <button class="btn btn-glow w-100 mb-3 py-3" id="checkoutBtn">
+                        <i class="fas fa-lock me-2"></i> Proceed to Secure Checkout
+                    </button>
+                    <button class="btn btn-outline-secondary w-100" id="clearCartBtn">
+                        <i class="fas fa-trash me-2"></i> Clear Cart
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade auth-modal" id="loginModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content auth-card">
+                <div class="modal-header border-0">
+                    <h3 class="modal-title">Login to <span style="color: #e74c3c;">Mayran</span> Shop</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-4">
+                            <label for="loginEmail" class="form-label fw-bold">Email Address</label>
+                            <input type="email" class="form-control form-control-lg" id="loginEmail" placeholder="name@example.com" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="loginPassword" class="form-label fw-bold">Password</label>
+                            <input type="password" class="form-control form-control-lg" id="loginPassword" placeholder="Enter your password" required>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                <label class="form-check-label" for="rememberMe">
+                                    Remember me
+                                </label>
+                            </div>
+                            <a href="#" class="text-decoration-none">Forgot Password?</a>
+                        </div>
+                        <button type="submit" class="btn btn-glow w-100 py-3 fs-5">
+                            <i class="fas fa-sign-in-alt me-2"></i> Login
+                        </button>
+                    </form>
+                    <div class="text-center mt-4">
+                        <p>Don't have an account? <a href="#" class="text-decoration-none fw-bold" id="showRegister">Register here</a></p>
+                    </div>
+                    <div class="text-center mt-4">
+                        <p class="text-muted">Or login with:</p>
+                        <div class="d-flex justify-content-center gap-3">
+                            <button class="btn btn-outline-primary">
+                                <i class="fab fa-google"></i>
+                            </button>
+                            <button class="btn btn-outline-primary">
+                                <i class="fab fa-facebook-f"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal fade auth-modal" id="registerModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content auth-card">
+                <div class="modal-header border-0">
+                    <h3 class="modal-title">Create Account</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="registerForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="regFirstName" class="form-label fw-bold">First Name</label>
+                                <input type="text" class="form-control" id="regFirstName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="regLastName" class="form-label fw-bold">Last Name</label>
+                                <input type="text" class="form-control" id="regLastName" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="regEmail" class="form-label fw-bold">Email Address</label>
+                            <input type="email" class="form-control" id="regEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="regPhone" class="form-label fw-bold">Phone Number</label>
+                            <input type="tel" class="form-control" id="regPhone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="regAddress" class="form-label fw-bold">Delivery Address</label>
+                            <textarea class="form-control" id="regAddress" rows="2" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="regArea" class="form-label fw-bold">Area in Dar es Salaam</label>
+                            <select class="form-select" id="regArea" required>
+                                <option value="">Select your area</option>
+                                <option value="city_center">City Center</option>
+                                <option value="kinondoni">Kinondoni</option>
+                                <option value="ilala">Ilala</option>
+                                <option value="temeke">Temeke</option>
+                                <option value="ubungo">Ubungo</option>
+                                <option value="kigamboni">Kigamboni</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="regPassword" class="form-label fw-bold">Password</label>
+                            <input type="password" class="form-control" id="regPassword" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="confirmPassword" class="form-label fw-bold">Confirm Password</label>
+                            <input type="password" class="form-control" id="confirmPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-glow w-100 py-3">
+                            <i class="fas fa-user-plus me-2"></i> Create Account
+                        </button>
+                    </form>
+                    <div class="text-center mt-4">
+                        <p>Already have an account? <a href="#" class="text-decoration-none fw-bold" id="showLogin">Login here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Processing Modal -->
+    <div class="modal fade" id="paymentModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content auth-card">
+                <div class="modal-header border-0">
+                    <h3 class="modal-title"><i class="fas fa-lock me-2"></i> Secure Payment</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="paymentProcessing">
+                        <div class="text-center mb-4">
+                            <div class="spinner-border text-primary" role="status" style="width: 4rem; height: 4rem;">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <h4 class="mt-4">Processing Payment...</h4>
+                            <p class="text-muted">Please wait while we process your payment</p>
+                        </div>
+                    </div>
+                    <div id="paymentSuccess" style="display: none;">
+                        <div class="text-center mb-4">
+                            <div class="display-1 text-success mb-3">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <h4>Payment Successful!</h4>
+                            <p class="text-muted">Your order has been placed successfully</p>
+                            <div class="mt-4">
+                                <p><strong>Order ID:</strong> <span id="successOrderId"></span></p>
+                                <p><strong>Total Amount:</strong> <span id="successOrderAmount"></span></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="paymentFailed" style="display: none;">
+                        <div class="text-center mb-4">
+                            <div class="display-1 text-danger mb-3">
+                                <i class="fas fa-times-circle"></i>
+                            </div>
+                            <h4>Payment Failed</h4>
+                            <p class="text-muted" id="paymentErrorMsg"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer with Developer Info -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5 class="footer-heading">May<span>ran</span> Online Shop</h5>
+                    <p class="mb-4">Your trusted online store for the latest electronics and smart devices in Tanzania. We bring technology to your doorstep with secure payments and fast delivery across Dar es Salaam.</p>
+                    <div class="social-icons mt-4">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f fa-lg"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="https://wa.me/255767479501" class="text-white" target="_blank"><i class="fab fa-whatsapp fa-lg"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5 class="footer-heading">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="index.html" class="text-white text-decoration-none"><i class="fas fa-chevron-right me-2"></i> Home</a></li>
+                        <li class="mb-2"><a href="products.html" class="text-white text-decoration-none"><i class="fas fa-chevron-right me-2"></i> Products</a></li>
+                        <li class="mb-2"><a href="dashboard.html" class="text-white text-decoration-none"><i class="fas fa-chevron-right me-2"></i> Dashboard</a></li>
+                        <li class="mb-2"><a href="orders.html" class="text-white text-decoration-none"><i class="fas fa-chevron-right me-2"></i> My Orders</a></li>
+                        <li class="mb-2"><a href="#tracking" class="text-white text-decoration-none"><i class="fas fa-chevron-right me-2"></i> Track Order</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="footer-heading">Payment Methods</h5>
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <span class="badge bg-light text-dark p-2"><i class="fas fa-mobile-alt me-1"></i> M-Pesa</span>
+                        <span class="badge bg-light text-dark p-2"><i class="fab fa-cc-visa me-1"></i> Visa</span>
+                        <span class="badge bg-light text-dark p-2"><i class="fas fa-qrcode me-1"></i> QR Code</span>
+                        <span class="badge bg-light text-dark p-2"><i class="fas fa-money-bill-wave me-1"></i> Tigo Pesa</span>
+                    </div>
+                    <div class="mt-3">
+                        <h6><i class="fas fa-truck me-2"></i> Delivery Areas</h6>
+                        <p class="small mb-0">Dar es Salaam • Kinondoni • Ilala • Temeke • Ubungo • Kigamboni</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h5 class="footer-heading">Newsletter</h5>
+                    <p class="mb-3">Subscribe to get updates on new products and exclusive offers.</p>
+                    <div class="input-group mt-3">
+                        <input type="email" class="form-control" placeholder="Your email" id="newsletterEmail">
+                        <button class="btn btn-glow" type="button" id="subscribeBtn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="mt-4">
+                        <h6><i class="fas fa-headset me-2"></i> Need Help?</h6>
+                        <p class="mb-1">WhatsApp: +255 767 479 501</p>
+                        <p class="mb-0">Email: support@mayranshop.co.tz</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Developer Information -->
+            <div class="developer-info">
+                <div class="d-flex align-items-center">
+                    <img src="https://ui-avatars.com/api/?name=Emmanuel+Kawia&background=ffd700&color=000&size=60" 
+                         alt="Emmanuel Kawia" class="developer-avatar">
+                    <div>
+                        <h6 class="mb-1" style="color: #ffd700;"><i class="fas fa-code me-2"></i> Developed By: Emmanuel Kawia</h6>
+                        <p class="mb-0 small">Full Stack Developer | Web & Mobile Applications</p>
+                        <p class="mb-0 small"><i class="fas fa-phone me-1"></i> +255 767 479 501 | <i class="fas fa-envelope me-1"></i> emmanuel@example.com</p>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="bg-light opacity-50">
+            <div class="text-center pt-3">
+                <p class="mb-2">&copy; 2023 May<span style="color: #ffd700;">ran</span> Online Shop. All rights reserved.</p>
+                <p class="small mb-0"><i class="fas fa-map-marker-alt me-1"></i> Dar es Salaam, Tanzania | <i class="fab fa-whatsapp me-1"></i> +255 767 479 501 | <i class="fas fa-envelope me-1"></i> info@mayranshop.co.tz</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Leaflet JS for Maps -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Main JavaScript -->
+    <script>
+        // =====================
+        // SYSTEM VARIABLES
+        // =====================
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        let products = JSON.parse(localStorage.getItem('products')) || [
+            {
+                id: 1,
+                name: "Samsung Galaxy S23 Ultra",
+                price: 1850000,
+                oldPrice: 2100000,
+                category: "smartphones",
+                image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "Latest Samsung flagship with 200MP camera, 12GB RAM, 512GB storage",
+                discount: 12,
+                stock: 15,
+                rating: 4.8
+            },
+            {
+                id: 2,
+                name: "Apple iPhone 15 Pro Max",
+                price: 2450000,
+                oldPrice: 2800000,
+                category: "smartphones",
+                image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "Apple's latest flagship with A17 Pro chip, 48MP camera",
+                discount: 15,
+                stock: 8,
+                rating: 4.9
+            },
+            {
+                id: 3,
+                name: "MacBook Pro 16-inch M2",
+                price: 4250000,
+                oldPrice: 4800000,
+                category: "laptops",
+                image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "Apple M2 chip, 16GB RAM, 1TB SSD, Retina display",
+                discount: 11,
+                stock: 6,
+                rating: 4.7
+            },
+            {
+                id: 4,
+                name: "Sony 65-inch 4K Smart TV",
+                price: 1850000,
+                oldPrice: 2250000,
+                category: "tvs",
+                image: "https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "65-inch 4K UHD Smart Android TV with Dolby Vision",
+                discount: 18,
+                stock: 12,
+                rating: 4.6
+            },
+            {
+                id: 5,
+                name: "Sony WH-1000XM5 Headphones",
+                price: 650000,
+                oldPrice: 850000,
+                category: "headphones",
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "Industry-leading noise cancellation, 30-hour battery",
+                discount: 24,
+                stock: 25,
+                rating: 4.8
+            },
+            {
+                id: 6,
+                name: "Apple Watch Series 9",
+                price: 950000,
+                oldPrice: 1150000,
+                category: "smartwatches",
+                image: "https://images.unsplash.com/photo-1434493650001-5d43a6fea0a8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "Latest Apple Watch with always-on display, ECG",
+                discount: 17,
+                stock: 18,
+                rating: 4.7
+            },
+            {
+                id: 7,
+                name: "DJI Mavic 3 Pro Drone",
+                price: 3850000,
+                oldPrice: 4500000,
+                category: "drones",
+                image: "https://images.unsplash.com/photo-1473968512647-3e447244af8f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "Professional drone with Hasselblad camera, 46min flight",
+                discount: 14,
+                stock: 4,
+                rating: 4.9
+            },
+            {
+                id: 8,
+                name: "PlayStation 5 Pro Bundle",
+                price: 1850000,
+                oldPrice: 2250000,
+                category: "gaming",
+                image: "https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+                description: "PS5 Pro with 2TB SSD, 2 controllers, 3 games",
+                discount: 18,
+                stock: 9,
+                rating: 4.8
+            }
+        ];
+
+        // =====================
+        // DOM ELEMENTS
+        // =====================
+        const cartBtn = document.getElementById('cartBtn');
+        const cartSidebar = document.getElementById('cartSidebar');
+        const closeCartBtn = document.getElementById('closeCart');
+        const cartCount = document.getElementById('cartCount');
+        const cartItems = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+        const cartSubtotal = document.getElementById('cartSubtotal');
+        const deliveryFee = document.getElementById('deliveryFee');
+        const cartTotalSection = document.getElementById('cartTotalSection');
+        const emptyCartMsg = document.getElementById('emptyCartMsg');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const clearCartBtn = document.getElementById('clearCartBtn');
+        const featuredProducts = document.getElementById('featuredProducts');
+        const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+        const registerModal = new bootstrap.Modal(document.getElementById('registerModal'));
+        const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+        const loginBtn = document.getElementById('loginBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const showRegister = document.getElementById('showRegister');
+        const showLogin = document.getElementById('showLogin');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const userName = document.getElementById('userName');
+        const logoutItem = document.getElementById('logoutItem');
+        const slides = document.querySelectorAll('.slide');
+        const indicators = document.querySelectorAll('.indicator');
+        const daysElement = document.getElementById('days');
+        const hoursElement = document.getElementById('hours');
+        const minutesElement = document.getElementById('minutes');
+        const secondsElement = document.getElementById('seconds');
+        const trackOrderBtn = document.getElementById('trackOrderBtn');
+        const trackingResult = document.getElementById('trackingResult');
+        const orderNumber = document.getElementById('orderNumber');
+        const selectedPaymentMethod = document.getElementById('selectedPaymentMethod');
+        let map = null;
+
+        // =====================
+        // INITIALIZATION
+        // =====================
+        document.addEventListener('DOMContentLoaded', function() {
+            initSlideshow();
+            initCountdown();
+            initAnimations();
+            updateCartCount();
+            updateCartDisplay();
+            loadFeaturedProducts();
+            checkUserStatus();
+            initPaymentMethodSelection();
+            initMap();
+            initSmoothScrolling();
+            setupEventListeners();
+        });
+
+        // =====================
+        // IMPROVED COUNTDOWN TIMER
+        // =====================
+        function initCountdown() {
+            // Set countdown to end of year
+            const now = new Date();
+            const endOfYear = new Date(now.getFullYear(), 11, 31, 23, 59, 59);
+            
+            const updateCountdown = () => {
+                const now = new Date();
+                const timeLeft = endOfYear - now;
+                
+                // Calculate time units
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                
+                // Update display with leading zeros
+                daysElement.textContent = days.toString().padStart(2, '0');
+                hoursElement.textContent = hours.toString().padStart(2, '0');
+                minutesElement.textContent = minutes.toString().padStart(2, '0');
+                secondsElement.textContent = seconds.toString().padStart(2, '0');
+                
+                // Add animation when numbers change
+                if (seconds === 59) {
+                    animateCountdownChange();
+                }
+                
+                // If countdown is over
+                if (timeLeft < 0) {
+                    clearInterval(countdownInterval);
+                    daysElement.textContent = '00';
+                    hoursElement.textContent = '00';
+                    minutesElement.textContent = '00';
+                    secondsElement.textContent = '00';
+                    
+                    // Change message when sale is over
+                    const countdownContainer = document.querySelector('.countdown-timer');
+                    countdownContainer.querySelector('h3').innerHTML = '<i class="fas fa-calendar-check me-2"></i> SALE ENDED';
+                    countdownContainer.querySelector('p').textContent = 'Thank you for shopping with us! New sales coming soon.';
+                }
+            };
+            
+            const countdownInterval = setInterval(updateCountdown, 1000);
+            updateCountdown(); // Initial call
+        }
+        
+        function animateCountdownChange() {
+            // Add animation class to countdown boxes
+            const countdownBoxes = document.querySelectorAll('.countdown-box');
+            countdownBoxes.forEach(box => {
+                box.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    box.style.transform = 'scale(1)';
+                }, 300);
+            });
+        }
+
+        // =====================
+        // INTERACTIVE MAP
+        // =====================
+        function initMap() {
+            const mapElement = document.getElementById('map');
+            if (mapElement) {
+                // Initialize map centered on Dar es Salaam
+                map = L.map('map').setView([-6.7924, 39.2083], 12);
+                
+                // Add OpenStreetMap tiles
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '© OpenStreetMap contributors'
+                }).addTo(map);
+                
+                // Add delivery area markers
+                const deliveryAreas = [
+                    { name: "City Center", coords: [-6.8161, 39.2804], color: "blue" },
+                    { name: "Kinondoni", coords: [-6.7950, 39.2500], color: "green" },
+                    { name: "Ilala", coords: [-6.9100, 39.2600], color: "red" },
+                    { name: "Temeke", coords: [-6.8300, 39.2800], color: "orange" },
+                    { name: "Ubungo", coords: [-6.7900, 39.2100], color: "purple" },
+                    { name: "Kigamboni", coords: [-6.8500, 39.3300], color: "cadetblue" }
+                ];
+                
+                deliveryAreas.forEach(area => {
+                    const marker = L.marker(area.coords).addTo(map);
+                    marker.bindPopup(`
+                        <div style="text-align: center;">
+                            <strong>${area.name}</strong><br>
+                            <i class="fas fa-shipping-fast" style="color: ${area.color}"></i><br>
+                            Delivery Area<br>
+                            <small>Same-day delivery available</small>
+                        </div>
+                    `);
+                    
+                    // Add circle overlay for delivery coverage
+                    L.circle(area.coords, {
+                        color: area.color,
+                        fillColor: area.color,
+                        fillOpacity: 0.1,
+                        radius: 2000
+                    }).addTo(map);
+                });
+                
+                // Add store location marker
+                const storeMarker = L.marker([-6.7924, 39.2083]).addTo(map);
+                storeMarker.bindPopup(`
+                    <div style="text-align: center;">
+                        <strong>Mayran Shop Headquarters</strong><br>
+                        <i class="fas fa-store" style="color: #e74c3c"></i><br>
+                        Main Warehouse & Office<br>
+                        <small>Kinondoni Industrial Area</small><br>
+                        <button class="btn btn-sm btn-primary mt-2" onclick="getDirections()">
+                            <i class="fas fa-directions"></i> Get Directions
+                        </button>
+                    </div>
+                `).openPopup();
+                
+                // Add legend
+                const legend = L.control({ position: 'bottomright' });
+                legend.onAdd = function() {
+                    const div = L.DomUtil.create('div', 'info legend');
+                    div.innerHTML = `
+                        <div style="background: white; padding: 10px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+                            <h6 style="margin: 0 0 10px 0; font-weight: bold;">Delivery Areas</h6>
+                            <div><i class="fas fa-circle" style="color: blue"></i> City Center</div>
+                            <div><i class="fas fa-circle" style="color: green"></i> Kinondoni</div>
+                            <div><i class="fas fa-circle" style="color: red"></i> Ilala</div>
+                            <div><i class="fas fa-circle" style="color: orange"></i> Temeke</div>
+                            <div><i class="fas fa-circle" style="color: purple"></i> Ubungo</div>
+                            <div><i class="fas fa-circle" style="color: cadetblue"></i> Kigamboni</div>
+                            <hr style="margin: 8px 0;">
+                            <div><i class="fas fa-store" style="color: #e74c3c"></i> Our Store</div>
+                        </div>
+                    `;
+                    return div;
+                };
+                legend.addTo(map);
+            }
+        }
+        
+        function getDirections() {
+            alert("Opening directions to Mayran Shop...\n\nAddress: Kinondoni Industrial Area, Dar es Salaam\n\nYou can use Google Maps or Waze for navigation.");
+            // In a real app, this would open navigation apps
+            // window.open('https://www.google.com/maps/dir//-6.7924,39.2083', '_blank');
+        }
+
+        // =====================
+        // ORDER TRACKING SYSTEM
+        // =====================
+        function initOrderTracking() {
+            trackOrderBtn.addEventListener('click', trackOrder);
+            orderNumber.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    trackOrder();
+                }
+            });
+        }
+        
+        function trackOrder() {
+            const orderId = orderNumber.value.trim();
+            if (!orderId) {
+                trackingResult.innerHTML = `
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Please enter an order number
+                    </div>
+                `;
+                return;
+            }
+            
+            // Show loading
+            trackingResult.innerHTML = `
+                <div class="alert alert-info">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-search me-2"></i>
+                            Searching for order: <strong>${orderId}</strong>
+                        </div>
+                        <div class="spinner-border spinner-border-sm" role="status"></div>
+                    </div>
+                </div>
+            `;
+            
+            // Simulate API call
+            setTimeout(() => {
+                const orders = JSON.parse(localStorage.getItem('orders')) || [];
+                const order = orders.find(o => o.id === orderId || o.orderId === orderId);
+                
+                if (order) {
+                    const statusSteps = [
+                        { id: 1, name: "Order Placed", icon: "fa-shopping-cart", active: true },
+                        { id: 2, name: "Processing", icon: "fa-cogs", active: order.status === 'processing' || order.status === 'shipped' || order.status === 'delivered' },
+                        { id: 3, name: "Shipped", icon: "fa-shipping-fast", active: order.status === 'shipped' || order.status === 'delivered' },
+                        { id: 4, name: "Out for Delivery", icon: "fa-truck", active: order.status === 'shipped' || order.status === 'delivered' },
+                        { id: 5, name: "Delivered", icon: "fa-check-circle", active: order.status === 'delivered' }
+                    ];
+                    
+                    let stepsHTML = '<div class="tracking-steps">';
+                    statusSteps.forEach(step => {
+                        stepsHTML += `
+                            <div class="tracking-step">
+                                <div class="step-icon ${step.active ? 'active' : ''}">
+                                    <i class="fas ${step.icon}"></i>
+                                </div>
+                                <div class="step-label ${step.active ? 'active' : ''}">${step.name}</div>
+                            </div>
+                        `;
+                    });
+                    stepsHTML += '</div>';
+                    
+                    const orderDate = new Date(order.date).toLocaleDateString('en-US', {
+                        weekday: 'long',
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    
+                    const estimatedDelivery = order.estimatedDelivery ? 
+                        new Date(order.estimatedDelivery).toLocaleDateString('en-US', {
+                            weekday: 'long',
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        }) : 'Within 2-3 business days';
+                    
+                    trackingResult.innerHTML = `
+                        <div class="tracking-result">
+                            <div class="alert alert-success">
+                                <h5><i class="fas fa-check-circle me-2"></i> Order Found: ${orderId}</h5>
+                            </div>
+                            
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <p><strong>Order Date:</strong> ${orderDate}</p>
+                                    <p><strong>Status:</strong> <span class="badge bg-${getStatusColor(order.status)}">${getStatusText(order.status)}</span></p>
+                                    <p><strong>Payment Method:</strong> ${order.paymentMethod.toUpperCase()}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Delivery Address:</strong> ${order.deliveryAddress || 'N/A'}</p>
+                                    <p><strong>Delivery Area:</strong> ${order.deliveryArea || 'N/A'}</p>
+                                    <p><strong>Estimated Delivery:</strong> ${estimatedDelivery}</p>
+                                </div>
+                            </div>
+                            
+                            <h6 class="mt-4 mb-3"><i class="fas fa-map-signs me-2"></i> Delivery Progress</h6>
+                            ${stepsHTML}
+                            
+                            <div class="mt-4">
+                                <h6><i class="fas fa-headset me-2"></i> Need Help?</h6>
+                                <div class="d-flex gap-2">
+                                    <button class="btn btn-sm btn-outline-primary" onclick="contactSupport('${orderId}')">
+                                        <i class="fas fa-phone me-1"></i> Call Support
+                                    </button>
+                                    <a href="https://wa.me/255767479501?text=Order%20Inquiry:%20${orderId}" 
+                                       class="btn btn-sm btn-outline-success" target="_blank">
+                                        <i class="fab fa-whatsapp me-1"></i> WhatsApp
+                                    </a>
+                                    <button class="btn btn-sm btn-outline-info" onclick="updateDeliveryMap('${orderId}')">
+                                        <i class="fas fa-map-marker-alt me-1"></i> Live Location
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    trackingResult.innerHTML = `
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            Order <strong>${orderId}</strong> not found. Please check your order number and try again.
+                            <div class="mt-2">
+                                <small>If you just placed the order, it may take a few minutes to appear in the system.</small>
+                            </div>
+                        </div>
+                    `;
+                }
+            }, 1500);
+        }
+        
+        function getStatusColor(status) {
+            switch(status) {
+                case 'processing': return 'warning';
+                case 'shipped': return 'info';
+                case 'delivered': return 'success';
+                case 'cancelled': return 'danger';
+                default: return 'secondary';
+            }
+        }
+        
+        function getStatusText(status) {
+            switch(status) {
+                case 'processing': return 'Processing';
+                case 'shipped': return 'Shipped';
+                case 'delivered': return 'Delivered';
+                case 'cancelled': return 'Cancelled';
+                default: return 'Pending';
+            }
+        }
+        
+        function contactSupport(orderId) {
+            alert(`Calling support for order ${orderId}...\n\nSupport: +255 767 479 502\n\nYou can also email: support@mayranshop.co.tz`);
+        }
+        
+        function updateDeliveryMap(orderId) {
+            alert(`Loading live delivery tracking for order ${orderId}...\n\nThis feature shows real-time location of your delivery agent.\n\n(Feature will be fully implemented in production)`);
+        }
+
+        // =====================
+        // USER PROFILE IMAGE UPLOAD
+        // =====================
+        function initProfileImageUpload() {
+            // Check if user is logged in and has profile image
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (currentUser && currentUser.profileImage) {
+                updateUserProfileImage(currentUser.profileImage);
+            }
+        }
+        
+        function updateUserProfileImage(imageUrl) {
+            // Update avatar in navigation
+            const avatarElements = document.querySelectorAll('.user-avatar, .developer-avatar');
+            avatarElements.forEach(el => {
+                if (el.classList.contains('developer-avatar')) return; // Don't change developer avatar
+                el.src = imageUrl;
+                el.onerror = function() {
+                    this.src = 'https://ui-avatars.com/api/?name=User&background=e74c3c&color=fff&size=80';
+                };
+            });
+        }
+        
+        function uploadProfileImage() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const imageUrl = event.target.result;
+                        
+                        // Save to localStorage
+                        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                        if (currentUser) {
+                            currentUser.profileImage = imageUrl;
+                            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                            
+                            // Update in users array
+                            let users = JSON.parse(localStorage.getItem('users')) || [];
+                            const userIndex = users.findIndex(u => u.email === currentUser.email);
+                            if (userIndex !== -1) {
+                                users[userIndex].profileImage = imageUrl;
+                                localStorage.setItem('users', JSON.stringify(users));
+                            }
+                            
+                            // Update display
+                            updateUserProfileImage(imageUrl);
+                            showNotification('Profile image updated successfully!');
+                        }
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            
+            input.click();
+        }
+
+        // =====================
+        // SETUP EVENT LISTENERS
+        // =====================
+        function setupEventListeners() {
+            initOrderTracking();
+            initProfileImageUpload();
+            
+            // Add profile image upload to user dropdown
+            const userDropdown = document.querySelector('#userDropdown');
+            if (userDropdown) {
+                userDropdown.addEventListener('click', function() {
+                    // Add upload option to dropdown menu
+                    setTimeout(() => {
+                        const dropdownMenu = document.querySelector('.dropdown-menu');
+                        if (dropdownMenu && !document.getElementById('uploadPhotoOption')) {
+                            const uploadOption = document.createElement('li');
+                            uploadOption.id = 'uploadPhotoOption';
+                            uploadOption.innerHTML = `
+                                <a class="dropdown-item" href="#" onclick="uploadProfileImage()">
+                                    <i class="fas fa-camera me-2"></i> Upload Photo
+                                </a>
+                            `;
+                            dropdownMenu.insertBefore(uploadOption, dropdownMenu.querySelector('.dropdown-divider'));
+                        }
+                    }, 100);
+                });
+            }
+        }
+
+        // =====================
+        // EXISTING FUNCTIONS (from your original code)
+        // =====================
+        function initSlideshow() {
+            let currentSlide = 0;
+            const slideInterval = 5000;
+            
+            const showSlide = (index) => {
+                slides.forEach(slide => slide.classList.remove('active'));
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+                
+                slides[index].classList.add('active');
+                indicators[index].classList.add('active');
+                currentSlide = index;
+            };
+            
+            const nextSlide = () => {
+                let nextIndex = (currentSlide + 1) % slides.length;
+                showSlide(nextIndex);
+            };
+            
+            let slideshowInterval = setInterval(nextSlide, slideInterval);
+            
+            const slideshowContainer = document.querySelector('.slideshow-container');
+            slideshowContainer.addEventListener('mouseenter', () => {
+                clearInterval(slideshowInterval);
+            });
+            
+            slideshowContainer.addEventListener('mouseleave', () => {
+                slideshowInterval = setInterval(nextSlide, slideInterval);
+            });
+            
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', () => {
+                    clearInterval(slideshowInterval);
+                    showSlide(index);
+                    slideshowInterval = setInterval(nextSlide, slideInterval);
+                });
+            });
+            
+            showSlide(0);
+        }
+
+        function initAnimations() {
+            const animateOnScroll = () => {
+                const elements = document.querySelectorAll('.animate-on-scroll');
+                elements.forEach(element => {
+                    const elementPosition = element.getBoundingClientRect().top;
+                    const screenPosition = window.innerHeight / 1.2;
+                    if (elementPosition < screenPosition) {
+                        element.classList.add('visible');
+                    }
+                });
+            };
+            
+            window.addEventListener('scroll', animateOnScroll);
+            window.addEventListener('load', animateOnScroll);
+            animateOnScroll();
+        }
+
+        function initSmoothScrolling() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    if (this.getAttribute('href') === '#') return;
+                    
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+
+        // ... (Keep all other existing functions from your original code)
+
+        // Initialize products if not exists
+        if (!localStorage.getItem('products')) {
+            localStorage.setItem('products', JSON.stringify(products));
+        }
+    </script>
+</body>
+</html>
